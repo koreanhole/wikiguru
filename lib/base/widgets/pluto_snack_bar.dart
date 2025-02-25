@@ -3,9 +3,9 @@ import 'package:flutter/services.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
 
-class DropSpotSnackBar {
+class PlutoSnackBar {
   static void showSuccessSnackBar(BuildContext context, String message) {
-    _showDropSpotSnackBar(
+    _showPlutoSnackBar(
       context,
       message,
       Icon(
@@ -16,7 +16,7 @@ class DropSpotSnackBar {
   }
 
   static void showFailureSnackBar(BuildContext context, String message) {
-    _showDropSpotSnackBar(
+    _showPlutoSnackBar(
       context,
       message,
       Icon(
@@ -26,7 +26,7 @@ class DropSpotSnackBar {
     );
   }
 
-  static Future<void> _showDropSpotSnackBar(
+  static Future<void> _showPlutoSnackBar(
     BuildContext context,
     String message,
     Widget icon,
