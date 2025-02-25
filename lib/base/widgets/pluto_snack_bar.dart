@@ -33,7 +33,7 @@ class PlutoSnackBar {
   ) async {
     showTopSnackBar(
       Overlay.of(context),
-      _DropSpotSnackBarContainer(
+      _PlutoSnackBarContainer(
         message: message,
         icon: icon,
       ),
@@ -46,11 +46,11 @@ class PlutoSnackBar {
 }
 
 // ignore: must_be_immutable
-class _DropSpotSnackBarContainer extends StatelessWidget {
+class _PlutoSnackBarContainer extends StatelessWidget {
   final String message;
   Widget icon;
 
-  _DropSpotSnackBarContainer({
+  _PlutoSnackBarContainer({
     required this.message,
     required this.icon,
   });
