@@ -2,17 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
-import 'package:provider/provider.dart';
 import 'package:wikiguru/base/theme/pluto_theme.dart';
 import 'package:wikiguru/screens/home_screen.dart';
 
 void main() {
   runZonedGuarded(
     () => runApp(
-      MultiProvider(
-        providers: [],
-        child: const WikiGuruApp(),
-      ),
+      WikiGuruApp(),
     ),
     (error, stackTrace) {
       Logger().e('error: $error, stackTrace: $stackTrace');
