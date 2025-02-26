@@ -32,8 +32,8 @@ class PlutoTheme {
     floatingActionButtonTheme: FloatingActionButtonThemeData(
       foregroundColor: PlutoColors.primaryColor,
       backgroundColor: PlutoColors.secondaryColor,
-      elevation: 0,
-      highlightElevation: 0,
+      elevation: 3,
+      highlightElevation: 3,
     ),
     textTheme: const TextTheme(
       bodyLarge: TextStyle(

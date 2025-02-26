@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
         child: Material(
           elevation: 3,
           borderRadius: _actionButtonContainerBorderRadius,
-          color: PlutoColors.secondaryColor,
+          color: PlutoColors.tertiaryColor,
           child: Padding(
             padding: _actionButtonItemPadding,
             child: Row(
@@ -64,6 +64,9 @@ class _WebViewButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: onTap,
+      elevation: 0,
+      highlightElevation: 0,
+      backgroundColor: PlutoColors.tertiaryColor,
       shape: CircleBorder(),
       child: Icon(
         iconData,
