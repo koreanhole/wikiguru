@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:wikiguru/base/theme/pluto_colors.dart';
 import 'package:wikiguru/base/widgets/pluto_bottom_sheet.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
-import 'package:wikiguru/components/bottomsheets/share_bottom_sheets.dart';
+
+final _actionButtonContainerBorderRadius = BorderRadius.circular(30);
+const _actionButtonContainerPadding = EdgeInsets.symmetric(horizontal: 44.0);
+const _actionButtonItemPadding =
+    EdgeInsets.symmetric(horizontal: 8, vertical: 4);
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -13,19 +18,28 @@ class HomeScreen extends StatelessWidget {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          _WebViewBackButton(),
-          SizedBox(width: 12),
-          _WebViewHomeButton(),
-          SizedBox(width: 12),
-          _WebViewSearchButton(),
-          SizedBox(width: 12),
-          _WebViewShareButton(),
-          SizedBox(width: 12),
-          _WebViewMoreButton(),
-        ],
+      floatingActionButton: Padding(
+        padding: _actionButtonContainerPadding,
+        child: Material(
+          elevation: 3,
+          borderRadius: _actionButtonContainerBorderRadius,
+          color: PlutoColors.secondaryColor,
+          child: Padding(
+            padding: _actionButtonItemPadding,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _WebViewBackButton(),
+                SizedBox(width: 12),
+                _WebViewHomeButton(),
+                SizedBox(width: 12),
+                _WebViewSearchButton(),
+                SizedBox(width: 12),
+                _WebViewMoreButton(),
+              ],
+            ),
+          ),
+        ),
       ),
       body: SafeArea(
         bottom: false,
@@ -37,17 +51,36 @@ class HomeScreen extends StatelessWidget {
   }
 }
 
-class _WebViewBackButton extends StatelessWidget {
+class _WebViewButton extends StatelessWidget {
+  final void Function()? onTap;
+  final IconData? iconData;
+
+  const _WebViewButton({
+    required this.onTap,
+    required this.iconData,
+  });
+
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
-      onPressed: () async {
-        await WikiGuruWebViewController.goBack(context);
-      },
+      onPressed: onTap,
       shape: CircleBorder(),
       child: Icon(
-        Icons.keyboard_backspace,
+        iconData,
+        size: 30,
       ),
+    );
+  }
+}
+
+class _WebViewBackButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return _WebViewButton(
+      onTap: () async {
+        await WikiGuruWebViewController.goBack(context);
+      },
+      iconData: Icons.keyboard_backspace,
     );
   }
 }
@@ -55,14 +88,11 @@ class _WebViewBackButton extends StatelessWidget {
 class _WebViewHomeButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () async {
+    return _WebViewButton(
+      onTap: () async {
         await WikiGuruWebViewController.goMainPage(context);
       },
-      shape: CircleBorder(),
-      child: Icon(
-        Icons.home,
-      ),
+      iconData: Icons.home,
     );
   }
 }
@@ -70,32 +100,11 @@ class _WebViewHomeButton extends StatelessWidget {
 class _WebViewSearchButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () async {
+    return _WebViewButton(
+      onTap: () async {
         await WikiGuruWebViewController.focusOnSearchBar(context);
       },
-      shape: CircleBorder(),
-      child: Icon(
-        Icons.search,
-      ),
-    );
-  }
-}
-
-class _WebViewShareButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () async {
-        await showPlutotBottomsheet(
-          context: context,
-          child: ShareBottomSheets(),
-        );
-      },
-      shape: CircleBorder(),
-      child: Icon(
-        Icons.ios_share,
-      ),
+      iconData: Icons.search,
     );
   }
 }
@@ -103,17 +112,14 @@ class _WebViewShareButton extends StatelessWidget {
 class _WebViewMoreButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return FloatingActionButton(
-      onPressed: () async {
+    return _WebViewButton(
+      onTap: () async {
         await showPlutotBottomsheet(
           context: context,
           child: MoreBottomSheets(),
         );
       },
-      shape: CircleBorder(),
-      child: Icon(
-        Icons.more_horiz,
-      ),
+      iconData: Icons.menu,
     );
   }
 }
