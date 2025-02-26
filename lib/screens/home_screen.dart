@@ -15,6 +15,8 @@ class HomeScreen extends StatelessWidget {
         children: [
           _WebViewBackButton(),
           SizedBox(width: 12),
+          _WebViewHomeButton(),
+          SizedBox(width: 12),
           _WebViewSearchButton(),
         ],
       ),
@@ -43,12 +45,27 @@ class _WebViewBackButton extends StatelessWidget {
   }
 }
 
+class _WebViewHomeButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      onPressed: () async {
+        await WikiGuruWebViewController.goMainPage(context);
+      },
+      shape: CircleBorder(),
+      child: Icon(
+        Icons.home,
+      ),
+    );
+  }
+}
+
 class _WebViewSearchButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
       onPressed: () async {
-        await WikiGuruWebViewController.focusOnSearchBar();
+        await WikiGuruWebViewController.focusOnSearchBar(context);
       },
       shape: CircleBorder(),
       child: Icon(
