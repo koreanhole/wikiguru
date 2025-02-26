@@ -152,7 +152,6 @@
 				DD8070B9DC529C90CE4F160F /* Pods-RunnerTests.release.xcconfig */,
 				122F32C9D18C3192D1C40FBB /* Pods-RunnerTests.profile.xcconfig */,
 			);
-			name = Pods;
 			path = Pods;
 			sourceTree = "<group>";
 		};
@@ -478,7 +477,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.koreanhole.pluto.wikiguru.wikiguru;
+				PRODUCT_BUNDLE_IDENTIFIER = com.koreanhole.pluto.wikiguru;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -666,7 +665,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.koreanhole.pluto.wikiguru.wikiguru;
+				PRODUCT_BUNDLE_IDENTIFIER = com.koreanhole.pluto.wikiguru;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -694,7 +693,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.koreanhole.pluto.wikiguru.wikiguru;
+				PRODUCT_BUNDLE_IDENTIFIER = com.koreanhole.pluto.wikiguru;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
