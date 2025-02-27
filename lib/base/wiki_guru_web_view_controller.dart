@@ -27,6 +27,10 @@ class WikiGuruWebViewController {
   // 필요하다면 외부에서 WebViewController에 접근할 수 있는 getter
   WebViewController get webViewController => _webViewController;
 
+  Future<String?> getCurrentUrl() async {
+    return await _webViewController.currentUrl();
+  }
+
   Future<void> focusOnSearchBar(BuildContext context) async {
     try {
       await _webViewController.runJavaScript(

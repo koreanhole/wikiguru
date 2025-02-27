@@ -25,13 +25,16 @@ class WebViewProvider with ChangeNotifier {
 
   void _setNavigationDelegate() {
     WikiGuruWebViewController().webViewController.setNavigationDelegate(
-          NavigationDelegate(onProgress: (progress) {
-            _webViewLoadingProgress = progress;
-            notifyListeners();
-          }, onPageFinished: (url) {
-            _hidePageNavigationButtons();
-            _enableSwipeToGoBackInIOS();
-          }),
+          NavigationDelegate(
+            onProgress: (progress) {
+              _webViewLoadingProgress = progress;
+              notifyListeners();
+            },
+            onPageFinished: (url) {
+              _hidePageNavigationButtons();
+              _enableSwipeToGoBackInIOS();
+            },
+          ),
         );
   }
 

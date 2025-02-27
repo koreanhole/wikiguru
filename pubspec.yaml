@@ -41,6 +41,7 @@ dependencies:
   logger: ^2.5.0
   webview_flutter: ^4.10.0
   webview_flutter_wkwebview: 3.16.3
+  share_plus: ^10.1.4
 
 dev_dependencies:
   flutter_launcher_icons: ^0.14.3
