@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 
 final _namuWikiBaseUrl = Uri.parse("https://namu.wiki");
@@ -20,21 +19,7 @@ class WikiGuruWebViewController {
   WikiGuruWebViewController._internal() {
     _webViewController = WebViewController()
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(_namuWikiBaseUrl)
-      ..setNavigationDelegate(
-        NavigationDelegate(
-          onProgress: (progress) {
-            Logger().d("progress: $progress");
-          },
-          onPageStarted: (url) {
-            Logger().d("onPageStarted: $url");
-          },
-          onPageFinished: (url) {
-            _hidePageNavigationButtons();
-            _enableSwipeToGoBackInIOS();
-          },
-        ),
-      );
+      ..loadRequest(_namuWikiBaseUrl);
   }
 
   late final WebViewController _webViewController;
@@ -67,27 +52,5 @@ class WikiGuruWebViewController {
 
   Future<void> goMainPage(BuildContext context) async {
     await _webViewController.loadRequest(_namuWikiBaseUrl);
-  }
-
-  Future<void> _hidePageNavigationButtons() async {
-    _webViewController.runJavaScript(
-      """
-      const elementToTop = document.querySelector('[data-tooltip="맨 위로"]');
-      if (elementToTop) {
-        elementToTop.style.display = 'none';
-      }
-      const elementToBottom = document.querySelector('[data-tooltip="맨 아래로"]');
-      if (elementToBottom) {
-        elementToBottom.style.display = 'none';
-      }
-      """,
-    );
-  }
-
-  Future<void> _enableSwipeToGoBackInIOS() async {
-    if (_webViewController.platform is WebKitWebViewController) {
-      (_webViewController.platform as WebKitWebViewController)
-          .setAllowsBackForwardNavigationGestures(true);
-    }
   }
 }
