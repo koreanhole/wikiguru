@@ -9,26 +9,42 @@ import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 final _namuWikiBaseUrl = Uri.parse("https://namu.wiki");
 
 class WikiGuruWebViewController {
-  static WebViewController webViewController = WebViewController()
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..loadRequest(_namuWikiBaseUrl)
-    ..setNavigationDelegate(
-      NavigationDelegate(
-        onProgress: (progress) {
-          Logger().d("progress: $progress");
-        },
-        onPageStarted: (url) {
-          Logger().d("onPageStarted: $url");
-        },
-        onPageFinished: (url) {
-          _hidePageNavigationButtons();
-          _enableSwipeToGoBackInIOS();
-        },
-      ),
-    );
-  static Future<void> focusOnSearchBar(BuildContext context) async {
+  // 싱글톤 인스턴스
+  static final WikiGuruWebViewController _instance =
+      WikiGuruWebViewController._internal();
+
+  factory WikiGuruWebViewController() {
+    return _instance;
+  }
+
+  WikiGuruWebViewController._internal() {
+    _webViewController = WebViewController()
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
+      ..loadRequest(_namuWikiBaseUrl)
+      ..setNavigationDelegate(
+        NavigationDelegate(
+          onProgress: (progress) {
+            Logger().d("progress: $progress");
+          },
+          onPageStarted: (url) {
+            Logger().d("onPageStarted: $url");
+          },
+          onPageFinished: (url) {
+            _hidePageNavigationButtons();
+            _enableSwipeToGoBackInIOS();
+          },
+        ),
+      );
+  }
+
+  late final WebViewController _webViewController;
+
+  // 필요하다면 외부에서 WebViewController에 접근할 수 있는 getter
+  WebViewController get webViewController => _webViewController;
+
+  Future<void> focusOnSearchBar(BuildContext context) async {
     try {
-      await webViewController.runJavaScript(
+      await _webViewController.runJavaScript(
         "document.querySelector('input[placeholder=\"여기에서 검색\"]').focus();",
       );
     } catch (exception) {
@@ -39,9 +55,9 @@ class WikiGuruWebViewController {
     }
   }
 
-  static Future<void> goBack(BuildContext context) async {
-    if (await webViewController.canGoBack() == true) {
-      await webViewController.goBack();
+  Future<void> goBack(BuildContext context) async {
+    if (await _webViewController.canGoBack() == true) {
+      await _webViewController.goBack();
     } else {
       if (context.mounted == true) {
         PlutoSnackBar.showFailureSnackBar(context, "뒤로 갈 수 없습니다.");
@@ -49,12 +65,12 @@ class WikiGuruWebViewController {
     }
   }
 
-  static Future<void> goMainPage(BuildContext context) async {
-    await webViewController.loadRequest(_namuWikiBaseUrl);
+  Future<void> goMainPage(BuildContext context) async {
+    await _webViewController.loadRequest(_namuWikiBaseUrl);
   }
 
-  static Future<void> _hidePageNavigationButtons() async {
-    webViewController.runJavaScript(
+  Future<void> _hidePageNavigationButtons() async {
+    _webViewController.runJavaScript(
       """
       const elementToTop = document.querySelector('[data-tooltip="맨 위로"]');
       if (elementToTop) {
@@ -68,9 +84,9 @@ class WikiGuruWebViewController {
     );
   }
 
-  static Future<void> _enableSwipeToGoBackInIOS() async {
-    if (webViewController.platform is WebKitWebViewController) {
-      (webViewController.platform as WebKitWebViewController)
+  Future<void> _enableSwipeToGoBackInIOS() async {
+    if (_webViewController.platform is WebKitWebViewController) {
+      (_webViewController.platform as WebKitWebViewController)
           .setAllowsBackForwardNavigationGestures(true);
     }
   }

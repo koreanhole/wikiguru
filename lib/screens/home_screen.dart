@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
 import 'package:wikiguru/base/widgets/pluto_bottom_sheet.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
+import 'package:wikiguru/providers/web_view_provider.dart';
 
 final _actionButtonContainerBorderRadius = BorderRadius.circular(30);
 const _actionButtonContainerPadding = EdgeInsets.symmetric(horizontal: 44.0);
@@ -15,6 +17,8 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final webViewLoadingProgress =
+        context.watch<WebViewProvider>().webViewLoadingProgress;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
@@ -29,6 +33,7 @@ class HomeScreen extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                Text(webViewLoadingProgress.toString()),
                 _WebViewBackButton(),
                 SizedBox(width: 12),
                 _WebViewHomeButton(),
@@ -44,7 +49,7 @@ class HomeScreen extends StatelessWidget {
       body: SafeArea(
         bottom: false,
         child: WebViewWidget(
-          controller: WikiGuruWebViewController.webViewController,
+          controller: WikiGuruWebViewController().webViewController,
         ),
       ),
     );
@@ -81,7 +86,7 @@ class _WebViewBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return _WebViewButton(
       onTap: () async {
-        await WikiGuruWebViewController.goBack(context);
+        await WikiGuruWebViewController().goBack(context);
       },
       iconData: Icons.keyboard_backspace,
     );
@@ -93,7 +98,7 @@ class _WebViewHomeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return _WebViewButton(
       onTap: () async {
-        await WikiGuruWebViewController.goMainPage(context);
+        await WikiGuruWebViewController().goMainPage(context);
       },
       iconData: Icons.home,
     );
@@ -105,7 +110,7 @@ class _WebViewSearchButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return _WebViewButton(
       onTap: () async {
-        await WikiGuruWebViewController.focusOnSearchBar(context);
+        await WikiGuruWebViewController().focusOnSearchBar(context);
       },
       iconData: Icons.search,
     );

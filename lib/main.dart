@@ -3,12 +3,21 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:wikiguru/base/theme/pluto_theme.dart';
+import 'package:wikiguru/providers/web_view_provider.dart';
 import 'package:wikiguru/screens/home_screen.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   runZonedGuarded(
     () => runApp(
-      WikiGuruApp(),
+      MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (_) => WebViewProvider(),
+          )
+        ],
+        child: WikiGuruApp(),
+      ),
     ),
     (error, stackTrace) {
       Logger().e('error: $error, stackTrace: $stackTrace');
