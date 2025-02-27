@@ -19,12 +19,14 @@ class MoreBottomSheets extends StatelessWidget {
             BottomSheetTitle(titleText: "더보기"),
             SizedBox(height: 16),
             BottomSheetItem(
+              leadingIcon: Icons.download,
               labelText: "오프라인 저장",
-              subLabelText: "나무위키 문서를 오프라인으로 즐겨보세요.",
             ),
             SizedBox(height: 12),
             BottomSheetItem(
-              labelText: "카카오톡으로 공유",
+              labelText: "공유하기",
+              subLabelText: "현재 보고 있는 페이지를 공유하세요.",
+              leadingIcon: Icons.ios_share,
               onTap: () {
                 PlutoSnackBar.showSuccessSnackBar(context, "message");
               },

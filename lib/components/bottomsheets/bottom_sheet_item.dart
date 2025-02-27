@@ -17,12 +17,14 @@ const bottomSheetSublabelTextStyle = TextStyle(
 class BottomSheetItem extends StatelessWidget {
   final String labelText;
   final String? subLabelText;
-  final Widget? trailingIcon;
+  final IconData? leadingIcon;
+  final IconData? trailingIcon;
   final void Function()? onTap;
   const BottomSheetItem({
     super.key,
     required this.labelText,
     this.subLabelText,
+    this.leadingIcon,
     this.trailingIcon,
     this.onTap,
   });
@@ -42,25 +44,37 @@ class BottomSheetItem extends StatelessWidget {
             padding: const EdgeInsets.all(12),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      labelText,
-                      style: bottomSheetLabelTextStyle,
+                    if (leadingIcon != null)
+                      Icon(
+                        leadingIcon,
+                        color: PlutoColors.primaryColor,
+                      ),
+                    SizedBox(width: 6),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          labelText,
+                          style: bottomSheetLabelTextStyle,
+                        ),
+                        if (subLabelText != null) ...[
+                          SizedBox(height: 2),
+                          Text(
+                            subLabelText!,
+                            style: bottomSheetSublabelTextStyle,
+                          )
+                        ]
+                      ],
                     ),
-                    if (subLabelText != null) ...[
-                      SizedBox(height: 2),
-                      Text(
-                        subLabelText!,
-                        style: bottomSheetSublabelTextStyle,
-                      )
-                    ]
                   ],
                 ),
-                if (trailingIcon != null) trailingIcon!,
+                if (trailingIcon != null) Icon(trailingIcon),
               ],
             ),
           ),
