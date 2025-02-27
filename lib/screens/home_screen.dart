@@ -8,6 +8,11 @@ import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
 import 'package:wikiguru/providers/web_view_provider.dart';
 
 final _actionButtonContainerBorderRadius = BorderRadius.circular(30);
+const _actionButtonContainerAnimatedDuration = Duration(milliseconds: 200);
+final _actionButtonFullSizedContainerPadding =
+    EdgeInsets.symmetric(horizontal: 44.0);
+final _actionButtonShrinkedContainerPadding =
+    EdgeInsets.symmetric(horizontal: 150.0);
 
 const _actionButtonItemPadding =
     EdgeInsets.symmetric(horizontal: 8, vertical: 4);
@@ -19,13 +24,27 @@ class HomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final webViewScrollState =
         context.watch<WebViewProvider>().webViewScrollState;
+
+    bool needFullSizedButtons() {
+      if (webViewScrollState == WebViewScrollState.scrollingDown) {
+        return false;
+      }
+      return true;
+    }
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton:
-          webViewScrollState == WebViewScrollState.scrollingDown
-              ? _ShrinkedWebViewButton()
-              : _FullSizedWebViewButton(),
+      floatingActionButton: AnimatedContainer(
+        duration: _actionButtonContainerAnimatedDuration,
+        curve: Curves.easeOut,
+        padding: needFullSizedButtons()
+            ? _actionButtonFullSizedContainerPadding
+            : _actionButtonShrinkedContainerPadding,
+        child: needFullSizedButtons()
+            ? _FullSizedWebViewButton()
+            : _ShrinkedWebViewButton(),
+      ),
       body: SafeArea(
         bottom: false,
         child: WebViewWidget(
@@ -37,30 +56,26 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _FullSizedWebViewButton extends StatelessWidget {
-  final _actionButtonContainerPadding = EdgeInsets.symmetric(horizontal: 44.0);
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: _actionButtonContainerPadding,
-      child: Material(
-        elevation: 3,
-        borderRadius: _actionButtonContainerBorderRadius,
-        color: PlutoColors.tertiaryColor,
-        child: Padding(
-          padding: _actionButtonItemPadding,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _WebViewBackButton(),
-              SizedBox(width: 12),
-              _WebViewHomeButton(),
-              SizedBox(width: 12),
-              _WebViewSearchButton(),
-              SizedBox(width: 12),
-              _WebViewMoreButton(),
-            ],
-          ),
+    return Material(
+      elevation: 3,
+      borderRadius: _actionButtonContainerBorderRadius,
+      color: PlutoColors.tertiaryColor,
+      child: Padding(
+        padding: _actionButtonItemPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _WebViewBackButton(),
+            SizedBox(width: 12),
+            _WebViewHomeButton(),
+            SizedBox(width: 12),
+            _WebViewSearchButton(),
+            SizedBox(width: 12),
+            _WebViewMoreButton(),
+          ],
         ),
       ),
     );
@@ -68,24 +83,20 @@ class _FullSizedWebViewButton extends StatelessWidget {
 }
 
 class _ShrinkedWebViewButton extends StatelessWidget {
-  final _actionButtonContainerPadding = EdgeInsets.symmetric(horizontal: 150.0);
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: _actionButtonContainerPadding,
-      child: Material(
-        elevation: 3,
-        borderRadius: _actionButtonContainerBorderRadius,
-        color: PlutoColors.tertiaryColor,
-        child: Padding(
-          padding: _actionButtonItemPadding,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              _WebViewSearchButton(),
-            ],
-          ),
+    return Material(
+      elevation: 3,
+      borderRadius: _actionButtonContainerBorderRadius,
+      color: PlutoColors.tertiaryColor,
+      child: Padding(
+        padding: _actionButtonItemPadding,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            _WebViewSearchButton(),
+          ],
         ),
       ),
     );

@@ -38,7 +38,9 @@ class WebViewProvider with ChangeNotifier {
   void _setOnScrollPositionChange() {
     WikiGuruWebViewController().webViewController.setOnScrollPositionChange(
       (scrollPositon) {
-        final changedScrollState = (_currentScrollPositionY < scrollPositon.y)
+        final changedScrollState = (_currentScrollPositionY < scrollPositon.y &&
+                scrollPositon.y >= 0 &&
+                _currentScrollPositionY >= 0)
             ? WebViewScrollState.scrollingDown
             : WebViewScrollState.scrollingUp;
         if (changedScrollState != _webViewScrollState) {
