@@ -24,11 +24,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final webViewScrollState =
-        context.watch<WebViewProvider>().webViewScrollState;
+    final webViewProvier = context.watch<WebViewProvider>();
 
     bool needFullSizedButtons() {
-      if (webViewScrollState == WebViewScrollState.scrollingDown) {
+      if (webViewProvier.webViewScrollState ==
+          WebViewScrollState.scrollingDown) {
         return false;
       }
       return true;
@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
         context: context,
         needFullSize: needFullSizedButtons(),
         animationDuration: _actionButtonContainerAnimatedDuration,
-        title: "나무위키",
+        title: webViewProvier.currentUrl ?? "",
       ).build(),
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
