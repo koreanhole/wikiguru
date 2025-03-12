@@ -29,7 +29,7 @@ class WikiGuruAnimatedAppBar {
         height:
             needFullSize ? fullSizedAppBarHeight : shrinkedSizedAppBarHeight,
         child: AppBar(
-          backgroundColor: PlutoColors.backgroundColor,
+          backgroundColor: PlutoColors.tertiaryColor,
           elevation: 3,
           scrolledUnderElevation: 3,
           leading: needFullSize ? _GoHomeButton() : SizedBox.shrink(),
