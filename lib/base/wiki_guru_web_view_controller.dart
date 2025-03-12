@@ -57,4 +57,8 @@ class WikiGuruWebViewController {
   Future<void> goMainPage(BuildContext context) async {
     await _webViewController.loadRequest(_namuWikiBaseUrl);
   }
+
+  Future<void> refresh() async {
+    _webViewController.reload();
+  }
 }

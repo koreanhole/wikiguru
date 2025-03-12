@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
+import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 
 class WikiGuruAnimatedAppBar {
   final BuildContext context;
@@ -17,7 +18,7 @@ class WikiGuruAnimatedAppBar {
     final fullSizedAppBarHeight = MediaQuery.of(context).padding.top + 48.0;
     final fullSizedAppBarTitleSize = 18.0;
     final shrinkedSizedAppBarHeight = MediaQuery.of(context).padding.top + 24.0;
-    final shrinkedAppBarTitleSize = 14.0;
+    final shrinkedAppBarTitleSize = 12.0;
     return PreferredSize(
       preferredSize: Size.fromHeight(
         needFullSize ? fullSizedAppBarHeight : shrinkedSizedAppBarHeight,
@@ -31,6 +32,8 @@ class WikiGuruAnimatedAppBar {
           backgroundColor: PlutoColors.backgroundColor,
           elevation: 3,
           scrolledUnderElevation: 3,
+          leading: needFullSize ? _GoHomeButton() : SizedBox.shrink(),
+          actions: needFullSize ? [_RefreshButton()] : [],
           title: FittedBox(
             child: Text(
               title,
@@ -45,6 +48,30 @@ class WikiGuruAnimatedAppBar {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _GoHomeButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.home),
+      onPressed: () {
+        WikiGuruWebViewController().goMainPage(context);
+      },
+    );
+  }
+}
+
+class _RefreshButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+      icon: Icon(Icons.refresh),
+      onPressed: () {
+        WikiGuruWebViewController().refresh();
+      },
     );
   }
 }

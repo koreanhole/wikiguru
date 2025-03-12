@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
-import 'package:wikiguru/base/widgets/pluto_app_bar.dart';
 import 'package:wikiguru/base/widgets/pluto_bottom_sheet.dart';
+import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
 import 'package:wikiguru/components/wiki_guru_animated_app_bar.dart';
@@ -153,9 +153,9 @@ class _WebViewHomeButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return _WebViewButton(
       onTap: () async {
-        await WikiGuruWebViewController().goMainPage(context);
+        PlutoSnackBar.showFailureSnackBar(context, "Not implemented");
       },
-      iconData: Icons.home,
+      iconData: Icons.star_border,
     );
   }
 }
