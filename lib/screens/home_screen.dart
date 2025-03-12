@@ -24,8 +24,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final fullSizedAppBarHeight = MediaQuery.of(context).padding.top + 48.0;
-    final shrinkedSizedAppBarHeight = MediaQuery.of(context).padding.top + 20.0;
     final webViewScrollState =
         context.watch<WebViewProvider>().webViewScrollState;
 

@@ -15,8 +15,8 @@ class WikiGuruAnimatedAppBar {
   });
   PreferredSizeWidget build() {
     final fullSizedAppBarHeight = MediaQuery.of(context).padding.top + 48.0;
-    final fullSizedAppBarTitleSize = 20.0;
-    final shrinkedSizedAppBarHeight = MediaQuery.of(context).padding.top + 20.0;
+    final fullSizedAppBarTitleSize = 18.0;
+    final shrinkedSizedAppBarHeight = MediaQuery.of(context).padding.top + 24.0;
     final shrinkedAppBarTitleSize = 14.0;
     return PreferredSize(
       preferredSize: Size.fromHeight(
@@ -38,7 +38,7 @@ class WikiGuruAnimatedAppBar {
                 fontSize: needFullSize
                     ? fullSizedAppBarTitleSize
                     : shrinkedAppBarTitleSize,
-                fontWeight: FontWeight.w600,
+                fontWeight: FontWeight.w400,
                 color: Colors.black,
               ),
             ),
