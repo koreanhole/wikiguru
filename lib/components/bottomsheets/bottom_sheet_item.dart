@@ -18,14 +18,14 @@ class BottomSheetItem extends StatelessWidget {
   final String labelText;
   final String? subLabelText;
   final IconData? leadingIcon;
-  final IconData? trailingIcon;
+  final Widget? trailingWidget;
   final void Function()? onTap;
   const BottomSheetItem({
     super.key,
     required this.labelText,
     this.subLabelText,
     this.leadingIcon,
-    this.trailingIcon,
+    this.trailingWidget,
     this.onTap,
   });
 
@@ -74,7 +74,7 @@ class BottomSheetItem extends StatelessWidget {
                     ),
                   ],
                 ),
-                if (trailingIcon != null) Icon(trailingIcon),
+                if (trailingWidget != null) trailingWidget!,
               ],
             ),
           ),

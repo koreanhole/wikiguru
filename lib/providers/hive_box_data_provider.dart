@@ -1,6 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
+enum HiveBoxBooleanDataKey {
+  isAnimatedFloatingActionButton,
+}
+
 class HiveBoxDataProvider with ChangeNotifier {
   final Box hiveBox;
   HiveBoxDataProvider(this.hiveBox) {
@@ -9,11 +13,11 @@ class HiveBoxDataProvider with ChangeNotifier {
     });
   }
 
-  dynamic getData(String key) {
-    return hiveBox.get(key);
+  bool getBooleanData(HiveBoxBooleanDataKey key) {
+    return hiveBox.get(key.name, defaultValue: false);
   }
 
-  Future<void> setData(String key, dynamic value) async {
-    await hiveBox.put(key, value);
+  Future<void> setBooleanData(HiveBoxBooleanDataKey key, bool value) async {
+    await hiveBox.put(key.name, value);
   }
 }

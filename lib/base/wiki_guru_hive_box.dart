@@ -20,7 +20,7 @@ class WikiGuruHiveBoxService {
     if (!_initialized) {
       await Hive.initFlutter();
       // 필요한 경우 어댑터 등록: Hive.registerAdapter(YourAdapter());
-      await Hive.openBox(_wikiguruHiveBoxKey); // 사용할 박스 이름 지정
+      _hiveBox = await Hive.openBox(_wikiguruHiveBoxKey); // 사용할 박스 이름 지정
       _initialized = true;
     }
   }

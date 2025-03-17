@@ -4,6 +4,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/components/floating_action_button.dart';
 import 'package:wikiguru/components/wiki_guru_animated_app_bar.dart';
+import 'package:wikiguru/providers/hive_box_data_provider.dart';
 import 'package:wikiguru/providers/web_view_provider.dart';
 
 const _actionButtonContainerAnimatedDuration = Duration(milliseconds: 200);
@@ -14,6 +15,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final webViewProvier = context.watch<WebViewProvider>();
+    final hiveBoxDataProvider = context.watch<HiveBoxDataProvider>();
 
     return Scaffold(
       appBar: WikiGuruAnimatedAppBar(
@@ -24,10 +26,13 @@ class HomeScreen extends StatelessWidget {
       ).build(),
       resizeToAvoidBottomInset: false,
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      // floatingActionButton: AnimatedFloatingActionButton(
-      //   animationDuration: _actionButtonContainerAnimatedDuration,
-      // ),
-      floatingActionButton: StaticFloatingActionButton(),
+      floatingActionButton: hiveBoxDataProvider.getBooleanData(
+        HiveBoxBooleanDataKey.isAnimatedFloatingActionButton,
+      )
+          ? AnimatedFloatingActionButton(
+              animationDuration: _actionButtonContainerAnimatedDuration,
+            )
+          : StaticFloatingActionButton(),
       body: SafeArea(
         bottom: false,
         child: WebViewWidget(
