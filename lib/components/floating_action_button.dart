@@ -8,7 +8,7 @@ import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
 import 'package:wikiguru/providers/web_view_provider.dart';
 
 final _actionButtonFullSizedContainerPadding =
-    EdgeInsets.symmetric(horizontal: 44.0);
+    EdgeInsets.symmetric(horizontal: 75.0);
 final _actionButtonShrinkedContainerPadding =
     EdgeInsets.symmetric(horizontal: 150.0);
 final _actionButtonItemPadding =
@@ -68,8 +68,8 @@ class _FullSizedWebViewButton extends StatelessWidget {
           children: [
             _WebViewBackButton(),
             SizedBox(width: 12),
-            _WebViewHomeButton(),
-            SizedBox(width: 12),
+            // _WebViewFavoriteButton(),
+            // SizedBox(width: 12),
             _WebViewSearchButton(),
             SizedBox(width: 12),
             _WebViewMoreButton(),
@@ -138,7 +138,7 @@ class _WebViewBackButton extends StatelessWidget {
   }
 }
 
-class _WebViewHomeButton extends StatelessWidget {
+class _WebViewFavoriteButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return _WebViewButton(
