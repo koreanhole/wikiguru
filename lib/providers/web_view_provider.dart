@@ -20,8 +20,12 @@ class WebViewProvider with ChangeNotifier {
 
   String? currentUrl;
   int get webViewLoadingProgress => _webViewLoadingProgress ?? 0;
-  WebViewScrollState get webViewScrollState =>
-      _webViewScrollState ?? WebViewScrollState.unknown;
+  bool get isWebViewScollingDown {
+    if (_webViewScrollState == WebViewScrollState.scrollingDown) {
+      return false;
+    }
+    return true;
+  }
 
   WebViewProvider() {
     _addJavaScriptChannel();
