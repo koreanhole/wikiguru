@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
 import 'package:wikiguru/base/widgets/pluto_bottom_sheet.dart';
+import 'package:wikiguru/base/widgets/pluto_dialog.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
+import 'package:wikiguru/components/dialogs/namu_wiki_outlines_dialog.dart';
 import 'package:wikiguru/providers/web_view_provider.dart';
 
 final _actionButtonFullSizedContainerPadding =
@@ -68,9 +70,9 @@ class _FullSizedWebViewButton extends StatelessWidget {
           children: [
             _WebViewBackButton(),
             SizedBox(width: 12),
-            // _WebViewFavoriteButton(),
-            // SizedBox(width: 12),
             _WebViewSearchButton(),
+            SizedBox(width: 12),
+            _WebViewShowNamuWikiOutlinesButton(),
             SizedBox(width: 12),
             _WebViewMoreButton(),
           ],
@@ -138,18 +140,6 @@ class _WebViewBackButton extends StatelessWidget {
   }
 }
 
-class _WebViewFavoriteButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _WebViewButton(
-      onTap: () async {
-        PlutoSnackBar.showFailureSnackBar(context, "Not implemented");
-      },
-      iconData: Icons.star_border,
-    );
-  }
-}
-
 class _WebViewSearchButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -172,7 +162,27 @@ class _WebViewMoreButton extends StatelessWidget {
           child: MoreBottomSheets(),
         );
       },
-      iconData: Icons.menu,
+      iconData: Icons.more_vert_outlined,
+    );
+  }
+}
+
+class _WebViewShowNamuWikiOutlinesButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final namuWikiOutlines = context.watch<WebViewProvider>().namuWikiOutlines;
+    return _WebViewButton(
+      onTap: () async {
+        if (namuWikiOutlines.isNotEmpty) {
+          await showPlutoDialog(
+            context: context,
+            child: NamuWikiOutlinesDialog(),
+          );
+        } else {
+          PlutoSnackBar.showFailureSnackBar(context, "목차를 불러올 수 없습니다.");
+        }
+      },
+      iconData: Icons.subject,
     );
   }
 }

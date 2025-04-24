@@ -1,5 +1,8 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:wikiguru/base/data/namu_wiki_outline.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
 
@@ -17,6 +20,7 @@ class WebViewProvider with ChangeNotifier {
   int? _webViewLoadingProgress;
   WebViewScrollState? _webViewScrollState;
   double _currentScrollPositionY = 0.0;
+  List<NamuWikiOutline>? _namuWikiOutlines;
 
   String? currentUrl;
   int get webViewLoadingProgress => _webViewLoadingProgress ?? 0;
@@ -27,6 +31,9 @@ class WebViewProvider with ChangeNotifier {
     return true;
   }
 
+  List<NamuWikiOutline> get namuWikiOutlines =>
+      _namuWikiOutlines ?? List.empty();
+
   WebViewProvider() {
     _addJavaScriptChannel();
     _setNavigationDelegate();
@@ -36,9 +43,10 @@ class WebViewProvider with ChangeNotifier {
   void _addJavaScriptChannel() {
     WikiGuruWebViewController().webViewController.addJavaScriptChannel(
       JavaScriptChannel.navigationUrlChannel.name,
-      onMessageReceived: (javascriptMessage) {
+      onMessageReceived: (javascriptMessage) async {
         currentUrl = javascriptMessage.message.cleanNamuTitle;
         notifyListeners();
+        _setNamuWikiOutlines();
       },
     );
   }
@@ -62,6 +70,39 @@ class WebViewProvider with ChangeNotifier {
 
   void _initCurrentUrl(String url) {
     currentUrl = Uri.decodeFull(url).cleanNamuTitle;
+    notifyListeners();
+  }
+
+  void _setNamuWikiOutlines() async {
+    _namuWikiOutlines = List.empty();
+    notifyListeners();
+    final resultString = await WikiGuruWebViewController()
+        .webViewController
+        .runJavaScriptReturningResult(
+      r'''
+        (function() {
+          var results = [];
+          document.querySelectorAll('a[id^="s-"]').forEach(function(aTag) {
+            if (/^s-(\d+(\.\d+)*)$/.test(aTag.id)) {
+              var numberPart = aTag.id.slice(2);
+              var depth = numberPart.split('.').length - 1;
+              var nextElem = aTag.nextElementSibling;
+              if (nextElem && nextElem.tagName.toLowerCase() === 'span' && nextElem.id) {
+                results.push({
+                  href: aTag.id,
+                  label: nextElem.id,
+                  depth: depth
+                });
+              }
+            }
+          });
+          return JSON.stringify(results);
+        })()
+      ''',
+    ) as String;
+    final List<dynamic> jsonList = jsonDecode(resultString);
+    _namuWikiOutlines =
+        jsonList.map((item) => NamuWikiOutline.fromJson(item)).toList();
     notifyListeners();
   }
 
