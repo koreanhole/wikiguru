@@ -1,5 +1,7 @@
 import 'dart:async';
+import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:wikiguru/base/theme/pluto_theme.dart';
@@ -13,24 +15,23 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await WikiGuruHiveBoxService().initialize();
 
-  runZonedGuarded(
-    () => runApp(
-      MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (_) => WebViewProvider(),
-          ),
-          ChangeNotifierProvider(
-            create: (_) => HiveBoxDataProvider(WikiGuruHiveBoxService().box),
-          )
-        ],
-        child: WikiGuruApp(),
-      ),
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => WebViewProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => HiveBoxDataProvider(WikiGuruHiveBoxService().box),
+        )
+      ],
+      child: WikiGuruApp(),
     ),
-    (error, stackTrace) {
-      Logger().e('error: $error, stackTrace: $stackTrace');
-    },
   );
+  PlatformDispatcher.instance.onError = (error, stack) {
+    Logger().e('error: $error, stackTrace: $stack');
+    return true;
+  };
 }
 
 class WikiGuruApp extends StatelessWidget {

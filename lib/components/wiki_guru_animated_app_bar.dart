@@ -41,7 +41,7 @@ class WikiGuruAnimatedAppBar {
                 fontSize: needFullSize
                     ? fullSizedAppBarTitleSize
                     : shrinkedAppBarTitleSize,
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 color: Colors.black,
               ),
             ),
