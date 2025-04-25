@@ -148,6 +148,7 @@ class _WebViewButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FloatingActionButton(
+      heroTag: iconData,
       onPressed: onTap,
       elevation: 0,
       highlightElevation: 0,
