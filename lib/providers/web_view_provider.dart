@@ -22,7 +22,7 @@ class WebViewProvider with ChangeNotifier {
   double _currentScrollPositionY = 0.0;
   List<NamuWikiOutline>? _namuWikiOutlines;
 
-  String? currentUrl;
+  String? namuTitle;
   int get webViewLoadingProgress => _webViewLoadingProgress ?? 0;
   bool get isWebViewScollingDown {
     if (_webViewScrollState == WebViewScrollState.scrollingDown) {
@@ -43,8 +43,8 @@ class WebViewProvider with ChangeNotifier {
   void _addJavaScriptChannel() {
     WikiGuruWebViewController().webViewController.addJavaScriptChannel(
       JavaScriptChannel.navigationUrlChannel.name,
-      onMessageReceived: (javascriptMessage) async {
-        currentUrl = javascriptMessage.message.cleanNamuTitle;
+      onMessageReceived: (javascriptMessage) {
+        namuTitle = javascriptMessage.message.cleanNamuTitle;
         notifyListeners();
         _setNamuWikiOutlines();
       },
@@ -69,13 +69,15 @@ class WebViewProvider with ChangeNotifier {
   }
 
   void _initCurrentUrl(String url) {
-    currentUrl = Uri.decodeFull(url).cleanNamuTitle;
+    namuTitle = Uri.decodeFull(url).cleanNamuTitle;
     notifyListeners();
   }
 
   void _setNamuWikiOutlines() async {
-    _namuWikiOutlines = List.empty();
+    _namuWikiOutlines = null;
     notifyListeners();
+    // Delay for page fully loaded -> 대문 페이지 갔을 때 이전 페이지의 목차가 보일때 있음
+    await Future.delayed(Duration(milliseconds: 500));
     final resultString = await WikiGuruWebViewController()
         .webViewController
         .runJavaScriptReturningResult(
@@ -103,6 +105,7 @@ class WebViewProvider with ChangeNotifier {
     final List<dynamic> jsonList = jsonDecode(resultString);
     _namuWikiOutlines =
         jsonList.map((item) => NamuWikiOutline.fromJson(item)).toList();
+    print("end");
     notifyListeners();
   }
 

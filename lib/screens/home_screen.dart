@@ -20,7 +20,7 @@ class HomeScreen extends StatelessWidget {
         context: context,
         needFullSize: webViewProvier.isWebViewScollingDown,
         animationDuration: _actionButtonContainerAnimatedDuration,
-        title: webViewProvier.currentUrl ?? "",
+        title: webViewProvier.namuTitle ?? "",
       ).build(),
       resizeToAvoidBottomInset: false,
       body: SafeArea(

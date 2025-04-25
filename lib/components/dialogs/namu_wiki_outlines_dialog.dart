@@ -9,7 +9,7 @@ class NamuWikiOutlinesDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final namuWikiOutlines = context.watch<WebViewProvider>().namuWikiOutlines;
+    final namuWikiOutlines = context.read<WebViewProvider>().namuWikiOutlines;
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20),

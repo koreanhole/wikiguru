@@ -203,9 +203,10 @@ class _WebViewMoreButton extends StatelessWidget {
 class _WebViewShowNamuWikiOutlinesButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final namuWikiOutlines = context.watch<WebViewProvider>().namuWikiOutlines;
     return _WebViewButton(
       onTap: () async {
+        final namuWikiOutlines =
+            context.read<WebViewProvider>().namuWikiOutlines;
         if (namuWikiOutlines.isNotEmpty) {
           await showPlutoDialog(
             context: context,
