@@ -1,39 +1,70 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
+import 'package:wikiguru/base/utils/widget_utils.dart';
 import 'package:wikiguru/base/widgets/pluto_bottom_sheet.dart';
 import 'package:wikiguru/base/widgets/pluto_dialog.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
 import 'package:wikiguru/components/dialogs/namu_wiki_outlines_dialog.dart';
+import 'package:wikiguru/providers/hive_box_data_provider.dart';
 import 'package:wikiguru/providers/web_view_provider.dart';
 
-final _actionButtonFullSizedContainerPadding =
-    EdgeInsets.symmetric(horizontal: 75.0);
-final _actionButtonShrinkedContainerPadding =
-    EdgeInsets.symmetric(horizontal: 150.0);
 final _actionButtonItemPadding =
     EdgeInsets.symmetric(horizontal: 8, vertical: 4);
 final _actionButtonContainerBorderRadius = BorderRadius.circular(30);
+final _floatingButtonSpaceBetween = 12.0;
+final double _floatingButtonContainerWidthMultiplier = 72;
 
-class StaticFloatingActionButton extends StatelessWidget {
-  const StaticFloatingActionButton({super.key});
+final List<Widget> _fullSizedFloatingButtons = [
+  _WebViewBackButton(),
+  _WebViewSearchButton(),
+  _WebViewShowNamuWikiOutlinesButton(),
+  _WebViewMoreButton(),
+];
+
+final List<Widget> _shrinkedFloatingButtons = [
+  _WebViewSearchButton(),
+];
+
+class FloatingButtonContainer extends StatelessWidget {
+  final Duration animatedContainerDuration;
+  const FloatingButtonContainer({
+    super.key,
+    required this.animatedContainerDuration,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: _actionButtonFullSizedContainerPadding,
+    final hiveBoxDataProvider = context.watch<HiveBoxDataProvider>();
+
+    return Padding(
+      padding: EdgeInsets.only(bottom: 24),
+      child: hiveBoxDataProvider.getBooleanData(
+              HiveBoxBooleanDataKey.isAnimatedFloatingActionButton)
+          ? _AnimatedFloatingActionButton(
+              animationDuration: animatedContainerDuration)
+          : _StaticFloatingActionButton(),
+    );
+  }
+}
+
+class _StaticFloatingActionButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: _floatingButtonContainerWidthMultiplier *
+          _fullSizedFloatingButtons.length,
       child: _FullSizedWebViewButton(),
     );
   }
 }
 
-class AnimatedFloatingActionButton extends StatelessWidget {
+class _AnimatedFloatingActionButton extends StatelessWidget {
   final Duration animationDuration;
 
-  const AnimatedFloatingActionButton({
-    super.key,
+  const _AnimatedFloatingActionButton({
     required this.animationDuration,
   });
 
@@ -45,9 +76,11 @@ class AnimatedFloatingActionButton extends StatelessWidget {
     return AnimatedContainer(
       duration: animationDuration,
       curve: Curves.easeOut,
-      padding: isWebViewScrollingDown
-          ? _actionButtonFullSizedContainerPadding
-          : _actionButtonShrinkedContainerPadding,
+      width: isWebViewScrollingDown
+          ? _floatingButtonContainerWidthMultiplier *
+              _fullSizedFloatingButtons.length
+          : _floatingButtonContainerWidthMultiplier *
+              _shrinkedFloatingButtons.length,
       child: isWebViewScrollingDown
           ? _FullSizedWebViewButton()
           : _ShrinkedWebViewButton(),
@@ -68,13 +101,10 @@ class _FullSizedWebViewButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _WebViewBackButton(),
-            SizedBox(width: 12),
-            _WebViewSearchButton(),
-            SizedBox(width: 12),
-            _WebViewShowNamuWikiOutlinesButton(),
-            SizedBox(width: 12),
-            _WebViewMoreButton(),
+            ...addSpacingBetween(
+              widgets: _fullSizedFloatingButtons,
+              widthSpacing: _floatingButtonSpaceBetween,
+            ),
           ],
         ),
       ),
@@ -95,7 +125,10 @@ class _ShrinkedWebViewButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            _WebViewSearchButton(),
+            ...addSpacingBetween(
+              widgets: _shrinkedFloatingButtons,
+              widthSpacing: _floatingButtonSpaceBetween,
+            ),
           ],
         ),
       ),
