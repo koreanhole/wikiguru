@@ -38,15 +38,18 @@ class _SetAnimatedFloatingActionButtonBottomSheetItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final hiveboxDataProvider = context.watch<HiveBoxDataProvider>();
+    final isAnimatedFloatingActionButton = hiveboxDataProvider.getBooleanData(
+      HiveBoxBooleanDataKey.isAnimatedFloatingActionButton,
+    );
 
     return BottomSheetItem(
-      labelText: "하단 바 줄이기",
-      subLabelText: "스크롤 방향에 따라 하단 바의 크기가 변합니다.",
+      labelText: "하단 바 자동 숨기기",
+      subLabelText: isAnimatedFloatingActionButton
+          ? "스크롤 방향에 따라 하단 바가 자동으로 나타납니다."
+          : "하단 바가 고정되어 있습니다.",
       trailingWidget: CupertinoSwitch(
         activeTrackColor: PlutoColors.primaryColor,
-        value: hiveboxDataProvider.getBooleanData(
-          HiveBoxBooleanDataKey.isAnimatedFloatingActionButton,
-        ),
+        value: isAnimatedFloatingActionButton,
         onChanged: (value) {
           hiveboxDataProvider.setBooleanData(
             HiveBoxBooleanDataKey.isAnimatedFloatingActionButton,

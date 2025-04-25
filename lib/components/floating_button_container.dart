@@ -24,10 +24,6 @@ final List<Widget> _fullSizedFloatingButtons = [
   _WebViewMoreButton(),
 ];
 
-final List<Widget> _shrinkedFloatingButtons = [
-  _WebViewSearchButton(),
-];
-
 class FloatingButtonContainer extends StatelessWidget {
   final Duration animatedContainerDuration;
   const FloatingButtonContainer({
@@ -73,17 +69,15 @@ class _AnimatedFloatingActionButton extends StatelessWidget {
     final isWebViewScrollingDown =
         context.watch<WebViewProvider>().isWebViewScollingDown;
 
-    return AnimatedContainer(
+    return AnimatedSlide(
       duration: animationDuration,
       curve: Curves.easeOut,
-      width: isWebViewScrollingDown
-          ? _floatingButtonContainerWidthMultiplier *
-              _fullSizedFloatingButtons.length
-          : _floatingButtonContainerWidthMultiplier *
-              _shrinkedFloatingButtons.length,
-      child: isWebViewScrollingDown
-          ? _FullSizedWebViewButton()
-          : _ShrinkedWebViewButton(),
+      offset: isWebViewScrollingDown ? Offset(0, 0) : Offset(0, 2),
+      child: SizedBox(
+        width: _floatingButtonContainerWidthMultiplier *
+            _fullSizedFloatingButtons.length,
+        child: _FullSizedWebViewButton(),
+      ),
     );
   }
 }
@@ -103,30 +97,6 @@ class _FullSizedWebViewButton extends StatelessWidget {
           children: [
             ...addSpacingBetween(
               widgets: _fullSizedFloatingButtons,
-              widthSpacing: _floatingButtonSpaceBetween,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class _ShrinkedWebViewButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Material(
-      elevation: 3,
-      borderRadius: _actionButtonContainerBorderRadius,
-      color: PlutoColors.tertiaryColor,
-      child: Padding(
-        padding: _actionButtonItemPadding,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            ...addSpacingBetween(
-              widgets: _shrinkedFloatingButtons,
               widthSpacing: _floatingButtonSpaceBetween,
             ),
           ],
