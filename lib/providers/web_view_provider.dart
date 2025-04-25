@@ -105,7 +105,6 @@ class WebViewProvider with ChangeNotifier {
     final List<dynamic> jsonList = jsonDecode(resultString);
     _namuWikiOutlines =
         jsonList.map((item) => NamuWikiOutline.fromJson(item)).toList();
-    print("end");
     notifyListeners();
   }
 
