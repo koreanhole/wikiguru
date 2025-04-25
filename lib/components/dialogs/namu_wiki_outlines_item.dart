@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wikiguru/base/data/namu_wiki_outline.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
-import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
+import 'package:wikiguru/base/utils/web_view_navigator.dart';
 
 class NamuWikiOutlinesItem extends StatelessWidget {
   final NamuWikiOutline outlineItem;
@@ -15,7 +15,7 @@ class NamuWikiOutlinesItem extends StatelessWidget {
     final indent = '    ' * outlineItem.depth;
     return GestureDetector(
       onTap: () {
-        WikiGuruWebViewController().goOutlinePage(context, outlineItem);
+        WebViewNavigator(context: context).goOutlinePage(outlineItem);
       },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,

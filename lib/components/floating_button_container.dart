@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
+import 'package:wikiguru/base/utils/web_view_navigator.dart';
 import 'package:wikiguru/base/utils/widget_utils.dart';
 import 'package:wikiguru/base/widgets/pluto_bottom_sheet.dart';
 import 'package:wikiguru/base/widgets/pluto_dialog.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
-import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
 import 'package:wikiguru/components/dialogs/namu_wiki_outlines_dialog.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
@@ -72,7 +72,7 @@ class _AnimatedFloatingActionButton extends StatelessWidget {
     return AnimatedSlide(
       duration: animationDuration,
       curve: Curves.easeOut,
-      offset: isWebViewScrollingDown ? Offset(0, 0) : Offset(0, 2),
+      offset: isWebViewScrollingDown ? Offset(0, 0) : Offset(0, 1.5),
       child: SizedBox(
         width: _floatingButtonContainerWidthMultiplier *
             _fullSizedFloatingButtons.length,
@@ -137,7 +137,7 @@ class _WebViewBackButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return _WebViewButton(
       onTap: () async {
-        await WikiGuruWebViewController().goBack(context);
+        await WebViewNavigator(context: context).goBack();
       },
       iconData: Icons.keyboard_backspace,
     );
@@ -149,7 +149,7 @@ class _WebViewSearchButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return _WebViewButton(
       onTap: () async {
-        await WikiGuruWebViewController().focusOnSearchBar(context);
+        await WebViewNavigator(context: context).focusOnSearchBar();
       },
       iconData: Icons.search,
     );

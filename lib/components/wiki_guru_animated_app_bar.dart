@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
-import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
+import 'package:wikiguru/base/utils/web_view_navigator.dart';
 
 class WikiGuruAnimatedAppBar {
   final BuildContext context;
@@ -58,7 +58,7 @@ class _GoHomeButton extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.home),
       onPressed: () {
-        WikiGuruWebViewController().goMainPage(context);
+        WebViewNavigator(context: context).goMainPage();
       },
     );
   }
@@ -70,7 +70,7 @@ class _RefreshButton extends StatelessWidget {
     return IconButton(
       icon: Icon(Icons.refresh),
       onPressed: () {
-        WikiGuruWebViewController().refresh();
+        WebViewNavigator(context: context).refresh();
       },
     );
   }

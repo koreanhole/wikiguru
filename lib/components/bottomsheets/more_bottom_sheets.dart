@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
+import 'package:wikiguru/base/utils/web_view_navigator.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
-import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_item.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_title.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
@@ -69,7 +69,8 @@ class _SharePageBottomSheetItem extends StatelessWidget {
       subLabelText: "현재 보고 있는 페이지를 공유하세요.",
       leadingIcon: Icons.ios_share,
       onTap: () async {
-        final currentUrl = await WikiGuruWebViewController().getCurrentUrl();
+        final currentUrl =
+            await WebViewNavigator(context: context).getCurrentUrl();
         if (currentUrl == null && context.mounted) {
           PlutoSnackBar.showFailureSnackBar(context, "공유할 수 없습니다.");
           return;
