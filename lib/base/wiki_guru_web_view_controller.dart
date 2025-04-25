@@ -1,9 +1,13 @@
 // ignore_for_file: depend_on_referenced_packages
 
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'package:wikiguru/base/data/namu_wiki_outline.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
+import 'package:wikiguru/components/dialogs/namu_wiki_outlines_item.dart';
 
 final _namuWikiBaseUrl = Uri.parse("https://namu.wiki");
 
@@ -56,6 +60,32 @@ class WikiGuruWebViewController {
 
   Future<void> goMainPage(BuildContext context) async {
     await _webViewController.loadRequest(_namuWikiBaseUrl);
+  }
+
+  Future<void> goOutlinePage(
+    BuildContext context,
+    NamuWikiOutline namuWikiOutline,
+  ) async {
+    final currentUrl = await _webViewController.currentUrl();
+    if (currentUrl == null) {
+      if (context.mounted == true) {
+        PlutoSnackBar.showFailureSnackBar(
+          context,
+          "이동할 수 없습니다.",
+        );
+      }
+      return;
+    }
+    // #를 포함하는 string들을 제거함
+    final cleanedUrl = currentUrl.split("#")[0];
+    await _webViewController.loadRequest(
+      Uri.parse(
+        '$cleanedUrl#${namuWikiOutline.href}',
+      ),
+    );
+    if (context.mounted == true) {
+      Navigator.of(context).pop();
+    }
   }
 
   Future<void> refresh() async {
