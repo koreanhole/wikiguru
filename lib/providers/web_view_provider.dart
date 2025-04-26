@@ -230,6 +230,12 @@ extension NamuWikiUrlExtension on String {
       result = result.substring(0, fromIndex);
     }
 
+    // '#' 이후의 부분 제거
+    int hashTagIndex = result.indexOf('#');
+    if (hashTagIndex != -1) {
+      result = result.substring(0, hashTagIndex);
+    }
+
     return result;
   }
 }

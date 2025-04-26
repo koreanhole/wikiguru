@@ -25,9 +25,9 @@ class MoreBottomSheets extends StatelessWidget {
             SizedBox(height: 24),
             BottomSheetTitle(titleText: "더보기"),
             SizedBox(height: 16),
-            _SetAnimatedFloatingActionButtonBottomSheetItem(),
-            SizedBox(height: 16),
             _SavePageBottomSheetItem(),
+            SizedBox(height: 16),
+            _SetAnimatedFloatingActionButtonBottomSheetItem(),
             SizedBox(height: 16),
             _SharePageBottomSheetItem(),
           ],
@@ -91,7 +91,7 @@ class _SavePageBottomSheetItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomSheetItem(
       labelText: "저장된 페이지 확인하기",
-      subLabelText: "저장된 페이지를 인터넷 연결이 없이 확인하세요.",
+      subLabelText: "저장된 페이지를 인터넷 연결 없이 확인하세요.",
       onTap: () {
         WikiGuruRouter.router
             .push(WikiGuruRouteItems.savedNamuWikiPageScreen.item.path);
