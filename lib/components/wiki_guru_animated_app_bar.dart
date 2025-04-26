@@ -35,14 +35,18 @@ class WikiGuruAnimatedAppBar {
           leading: needFullSize ? _GoHomeButton() : SizedBox.shrink(),
           actions: needFullSize ? [_RefreshButton()] : [],
           title: FittedBox(
-            child: Text(
-              title,
+            child: AnimatedDefaultTextStyle(
+              duration: animationDuration,
+              curve: Curves.easeOut,
               style: TextStyle(
                 fontSize: needFullSize
                     ? fullSizedAppBarTitleSize
                     : shrinkedAppBarTitleSize,
                 fontWeight: FontWeight.w600,
                 color: Colors.black,
+              ),
+              child: Text(
+                title,
               ),
             ),
           ),
