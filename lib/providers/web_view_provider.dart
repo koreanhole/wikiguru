@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wikiguru/base/data/namu_wiki_outline.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:webview_flutter_wkwebview/webview_flutter_wkwebview.dart';
+import 'package:wikiguru/providers/hive_box_data_provider.dart';
 
 enum WebViewScrollState {
   scrollingDown,
@@ -38,6 +40,24 @@ class WebViewProvider with ChangeNotifier {
     _addJavaScriptChannel();
     _setNavigationDelegate();
     _setOnScrollPositionChange();
+  }
+
+  Future<void> saveCurrentPageToHiveBox(BuildContext context) async {
+    final htmlString = await WikiGuruWebViewController()
+            .webViewController
+            .runJavaScriptReturningResult("document.documentElement.outerHTML")
+        as String;
+    final currentUrl =
+        await WikiGuruWebViewController().webViewController.currentUrl();
+    if (currentUrl == null) {
+      return;
+    }
+    if (context.mounted == true) {
+      await context.read<HiveBoxDataProvider>().setNamuWikiHtmlData(
+            htmlString: htmlString,
+            currentUrl: currentUrl,
+          );
+    }
   }
 
   void _addJavaScriptChannel() {

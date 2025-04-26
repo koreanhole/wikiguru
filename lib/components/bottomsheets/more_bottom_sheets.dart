@@ -8,6 +8,7 @@ import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_item.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_title.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
+import 'package:wikiguru/providers/web_view_provider.dart';
 
 class MoreBottomSheets extends StatelessWidget {
   const MoreBottomSheets({super.key});
@@ -25,6 +26,8 @@ class MoreBottomSheets extends StatelessWidget {
             BottomSheetTitle(titleText: "더보기"),
             SizedBox(height: 16),
             _SetAnimatedFloatingActionButtonBottomSheetItem(),
+            SizedBox(height: 16),
+            _SavePageBottomSheetItem(),
             SizedBox(height: 16),
             _SharePageBottomSheetItem(),
           ],
@@ -66,7 +69,7 @@ class _SharePageBottomSheetItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomSheetItem(
       labelText: "공유하기",
-      subLabelText: "현재 보고 있는 페이지를 공유하세요.",
+      subLabelText: "현재 페이지를 다른 앱으로 공유하세요.",
       leadingIcon: Icons.ios_share,
       onTap: () async {
         final currentUrl =
@@ -78,6 +81,42 @@ class _SharePageBottomSheetItem extends StatelessWidget {
         Share.shareUri(
           Uri.parse(currentUrl!),
         );
+      },
+    );
+  }
+}
+
+class _SavePageBottomSheetItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BottomSheetItem(
+      labelText: "오프라인 저장",
+      subLabelText: "현재 페이지를 인터넷 연결이 없어도 확인하세요.",
+      leadingIcon: Icons.star_outline,
+      trailingWidget: GestureDetector(
+        onTap: () {
+          print("object");
+        },
+        child: Icon(
+          Icons.chevron_right_outlined,
+          color: PlutoColors.primaryColor,
+        ),
+      ),
+      onTap: () async {
+        final currentUrl =
+            await WebViewNavigator(context: context).getCurrentUrl();
+        if (currentUrl == null && context.mounted) {
+          PlutoSnackBar.showFailureSnackBar(context, "저장할 수 없습니다.");
+          return;
+        }
+        if (context.mounted == true) {
+          await context
+              .read<WebViewProvider>()
+              .saveCurrentPageToHiveBox(context);
+        }
+        if (context.mounted == true) {
+          PlutoSnackBar.showSuccessSnackBar(context, "현재 페이지를 저장했습니다.");
+        }
       },
     );
   }
