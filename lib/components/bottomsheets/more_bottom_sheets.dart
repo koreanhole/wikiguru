@@ -5,10 +5,10 @@ import 'package:share_plus/share_plus.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
 import 'package:wikiguru/base/utils/web_view_navigator.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
+import 'package:wikiguru/base/wiki_guru_router.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_item.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_title.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
-import 'package:wikiguru/providers/web_view_provider.dart';
 
 class MoreBottomSheets extends StatelessWidget {
   const MoreBottomSheets({super.key});
@@ -90,34 +90,17 @@ class _SavePageBottomSheetItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomSheetItem(
-      labelText: "오프라인 저장",
-      subLabelText: "현재 페이지를 인터넷 연결이 없어도 확인하세요.",
-      leadingIcon: Icons.star_outline,
-      trailingWidget: GestureDetector(
-        onTap: () {
-          print("object");
-        },
-        child: Icon(
-          Icons.chevron_right_outlined,
-          color: PlutoColors.primaryColor,
-        ),
-      ),
-      onTap: () async {
-        final currentUrl =
-            await WebViewNavigator(context: context).getCurrentUrl();
-        if (currentUrl == null && context.mounted) {
-          PlutoSnackBar.showFailureSnackBar(context, "저장할 수 없습니다.");
-          return;
-        }
-        if (context.mounted == true) {
-          await context
-              .read<WebViewProvider>()
-              .saveCurrentPageToHiveBox(context);
-        }
-        if (context.mounted == true) {
-          PlutoSnackBar.showSuccessSnackBar(context, "현재 페이지를 저장했습니다.");
-        }
+      labelText: "저장된 페이지 확인하기",
+      subLabelText: "저장된 페이지를 인터넷 연결이 없이 확인하세요.",
+      onTap: () {
+        WikiGuruRouter.router
+            .push(WikiGuruRouteItems.savedNamuWikiPageScreen.item.path);
       },
+      leadingIcon: Icons.star_outline,
+      trailingWidget: Icon(
+        Icons.chevron_right_outlined,
+        color: PlutoColors.primaryColor,
+      ),
     );
   }
 }

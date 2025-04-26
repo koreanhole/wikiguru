@@ -49,16 +49,20 @@ class HiveBoxDataProvider with ChangeNotifier {
     );
   }
 
-  NamuWikiHtmlData? getNamuWikiHtmlData(String currentUrl) {
-    return NamuWikiHtmlData.fromJson(
-      hiveBox.get(currentUrl, defaultValue: null),
-    );
-  }
-
-  List<String> getAllSavedNamuWikiUrls() {
-    return hiveBox.get(
+  List<NamuWikiHtmlData> getAllSavedNamuWikiHtmlData() {
+    final List<String> allSavedNamuWikiUrls = hiveBox.get(
       HiveBoxHtmlDataKey.namuWiki.name,
       defaultValue: List<String>.empty(),
     );
+    if (allSavedNamuWikiUrls.isEmpty) {
+      return List.empty();
+    }
+    return allSavedNamuWikiUrls
+        .map(
+          (url) => NamuWikiHtmlData.fromJson(
+            hiveBox.get(url) as Map<String, dynamic>,
+          ),
+        )
+        .toList();
   }
 }

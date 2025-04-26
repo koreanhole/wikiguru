@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:logger/web.dart';
 import 'package:wikiguru/base/theme/pluto_theme.dart';
 import 'package:wikiguru/base/wiki_guru_hive_box.dart';
+import 'package:wikiguru/base/wiki_guru_router.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
 import 'package:wikiguru/providers/web_view_provider.dart';
-import 'package:wikiguru/screens/home_screen.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -37,11 +37,11 @@ class WikiGuruApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: '',
       debugShowCheckedModeBanner: false,
       theme: PlutoTheme.materialTheme,
-      home: const HomeScreen(),
+      routerConfig: WikiGuruRouter.router,
     );
   }
 }

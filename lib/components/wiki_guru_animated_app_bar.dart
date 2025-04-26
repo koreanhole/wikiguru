@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
 import 'package:wikiguru/base/utils/web_view_navigator.dart';
+import 'package:wikiguru/providers/web_view_provider.dart';
 
 class WikiGuruAnimatedAppBar {
   final BuildContext context;
@@ -32,7 +34,7 @@ class WikiGuruAnimatedAppBar {
           backgroundColor: PlutoColors.tertiaryColor,
           elevation: 3,
           scrolledUnderElevation: 3,
-          leading: needFullSize ? _GoHomeButton() : SizedBox.shrink(),
+          leading: needFullSize ? _GoBackButton() : SizedBox.shrink(),
           actions: needFullSize ? [_RefreshButton()] : [],
           title: FittedBox(
             child: AnimatedDefaultTextStyle(
@@ -56,13 +58,16 @@ class WikiGuruAnimatedAppBar {
   }
 }
 
-class _GoHomeButton extends StatelessWidget {
+class _GoBackButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    if (context.read<WebViewProvider>().isDefaultNamuTitle) {
+      return SizedBox.shrink();
+    }
     return IconButton(
-      icon: Icon(Icons.home),
+      icon: Icon(Icons.keyboard_backspace),
       onPressed: () {
-        WebViewNavigator(context: context).goMainPage();
+        WebViewNavigator(context: context).goBack();
       },
     );
   }

@@ -25,6 +25,7 @@ class WebViewProvider with ChangeNotifier {
   List<NamuWikiOutline>? _namuWikiOutlines;
 
   String? namuTitle;
+  bool get isDefaultNamuTitle => namuTitle == "나무위키:대문" || namuTitle == null;
   int get webViewLoadingProgress => _webViewLoadingProgress ?? 0;
   bool get isWebViewScollingDown {
     if (_webViewScrollState == WebViewScrollState.scrollingDown) {
