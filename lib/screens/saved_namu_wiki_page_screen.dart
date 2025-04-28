@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:webview_flutter/webview_flutter.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
 import 'package:wikiguru/base/utils/date_time_utils.dart';
+import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_item.dart';
 import 'package:wikiguru/components/wiki_guru_static_app_bar.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
@@ -39,8 +41,13 @@ class SavedNamuWikiPageScreen extends StatelessWidget {
                           children: [
                             SizedBox(height: 20),
                             BottomSheetItem(
-                              onTap: () {
-                                print(data.htmlString);
+                              onTap: () async {
+                                final webViewController = WebViewController();
+                                await webViewController
+                                    .loadHtmlString(data.htmlString);
+                                if (context.mounted == false) return;
+                                PlutoSnackBar.showFailureSnackBar(
+                                    context, "미구현 기능");
                               },
                               labelText: cleanNamuTitle,
                               subLabelText: formattedDateTimeString,
