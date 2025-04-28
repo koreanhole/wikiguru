@@ -91,7 +91,7 @@ class _SavePageBottomSheetItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return BottomSheetItem(
       labelText: "저장된 페이지 확인하기",
-      subLabelText: "저장된 페이지를 인터넷 연결 없이 확인하세요.",
+      subLabelText: "인터넷 연결이 없어도 확인할 수 있어요.",
       onTap: () {
         WikiGuruRouter.router
             .push(WikiGuruRouteItems.savedNamuWikiPageScreen.item.path);

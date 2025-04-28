@@ -11,7 +11,6 @@ import 'package:provider/provider.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await WikiGuruHiveBoxService().initialize();
-
   runApp(
     MultiProvider(
       providers: [

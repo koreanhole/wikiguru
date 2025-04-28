@@ -58,11 +58,15 @@ class HiveBoxDataProvider with ChangeNotifier {
       return List.empty();
     }
     return allSavedNamuWikiUrls
-        .map(
-          (url) => NamuWikiHtmlData.fromJson(
-            hiveBox.get(url) as Map<String, dynamic>,
-          ),
-        )
+        .map((url) {
+          final data = hiveBox.get(url);
+          if (data == null || data is! Map<String, dynamic>) {
+            // 데이터가 없거나 타입이 맞지 않으면 건너뜀
+            return null;
+          }
+          return NamuWikiHtmlData.fromJson(data);
+        })
+        .whereType<NamuWikiHtmlData>() // null만 제거
         .toList();
   }
 }

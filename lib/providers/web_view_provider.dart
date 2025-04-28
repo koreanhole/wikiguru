@@ -90,7 +90,7 @@ class WebViewProvider with ChangeNotifier {
   }
 
   void _initCurrentUrl(String url) {
-    namuTitle = Uri.decodeFull(url).cleanNamuTitle;
+    namuTitle = url.cleanNamuTitleDecode;
     notifyListeners();
   }
 
@@ -237,5 +237,9 @@ extension NamuWikiUrlExtension on String {
     }
 
     return result;
+  }
+
+  String? get cleanNamuTitleDecode {
+    return Uri.decodeFull(this).cleanNamuTitle;
   }
 }
