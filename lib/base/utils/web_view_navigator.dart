@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logger/web.dart';
 import 'package:wikiguru/base/data/namu_wiki_outline.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
@@ -9,13 +10,16 @@ class WebViewNavigator {
   WebViewNavigator({required this.context});
 
   Future<String?> getCurrentUrl() async {
-    return await WikiGuruWebViewController().webViewController.currentUrl();
+    final webUri =
+        await WikiGuruWebViewController().webViewController?.getUrl();
+    return webUri.toString();
   }
 
   Future<void> focusOnSearchBar() async {
     try {
-      await WikiGuruWebViewController().webViewController.runJavaScript(
-            "document.querySelector('input[placeholder=\"여기에서 검색\"]').focus();",
+      await WikiGuruWebViewController().webViewController?.evaluateJavascript(
+            source:
+                "document.querySelector('input[placeholder=\"여기에서 검색\"]').focus();",
           );
     } catch (exception) {
       Logger().e("focusOnSearchBar: $exception");
@@ -26,9 +30,9 @@ class WebViewNavigator {
   }
 
   Future<void> goBack() async {
-    if (await WikiGuruWebViewController().webViewController.canGoBack() ==
+    if (await WikiGuruWebViewController().webViewController?.canGoBack() ==
         true) {
-      await WikiGuruWebViewController().webViewController.goBack();
+      await WikiGuruWebViewController().webViewController?.goBack();
     } else {
       if (context.mounted == true) {
         PlutoSnackBar.showFailureSnackBar(context, "뒤로 갈 수 없습니다.");
@@ -37,16 +41,17 @@ class WebViewNavigator {
   }
 
   Future<void> goMainPage() async {
-    await WikiGuruWebViewController()
-        .webViewController
-        .loadRequest(namuWikiBaseUrl);
+    await WikiGuruWebViewController().webViewController?.loadUrl(
+          urlRequest: URLRequest(
+            url: namuWikiBaseWebUri,
+          ),
+        );
   }
 
   Future<void> goOutlinePage(
     NamuWikiOutline namuWikiOutline,
   ) async {
-    final currentUrl =
-        await WikiGuruWebViewController().webViewController.currentUrl();
+    final currentUrl = await getCurrentUrl();
     if (currentUrl == null) {
       if (context.mounted == true) {
         PlutoSnackBar.showFailureSnackBar(
@@ -58,9 +63,13 @@ class WebViewNavigator {
     }
     // #를 포함하는 string들을 제거함
     final cleanedUrl = currentUrl.split("#")[0];
-    await WikiGuruWebViewController().webViewController.loadRequest(
-          Uri.parse(
-            '$cleanedUrl#${namuWikiOutline.href}',
+    await WikiGuruWebViewController().webViewController?.loadUrl(
+          urlRequest: URLRequest(
+            url: WebUri.uri(
+              Uri.parse(
+                '$cleanedUrl#${namuWikiOutline.href}',
+              ),
+            ),
           ),
         );
     if (context.mounted == true) {
@@ -69,6 +78,6 @@ class WebViewNavigator {
   }
 
   Future<void> refresh() async {
-    WikiGuruWebViewController().webViewController.reload();
+    WikiGuruWebViewController().webViewController?.reload();
   }
 }

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:wikiguru/base/data/web_view_scroll_state.dart';
+import 'package:wikiguru/base/utils/url_utils.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/components/floating_button_container.dart';
 import 'package:wikiguru/components/wiki_guru_animated_app_bar.dart';
@@ -8,33 +10,106 @@ import 'package:wikiguru/providers/web_view_provider.dart';
 
 const _actionButtonContainerAnimatedDuration = Duration(milliseconds: 200);
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final webViewProvier = context.watch<WebViewProvider>();
+  State<HomeScreen> createState() => _HomeScreenState();
+}
 
+class _HomeScreenState extends State<HomeScreen> {
+  WebViewScrollState? _webViewScrollState;
+  int _currentScrollPositionY = 0;
+  bool get isWebViewScollingDown {
+    if (_webViewScrollState == WebViewScrollState.scrollingDown) {
+      return false;
+    }
+    return true;
+  }
+
+  String namuTitle = "";
+  bool get needGoBackButton {
+    return !(namuTitle == "" || namuTitle == "나무위키:대문");
+  }
+
+  void setWebViewController(InAppWebViewController controller) {
+    WikiGuruWebViewController().controller = controller;
+  }
+
+  void setWebViewScrollState(InAppWebViewController controller, int x, int y) {
+    setState(
+      () {
+        final changedScrollState = (_currentScrollPositionY < y &&
+                y >= 0 &&
+                _currentScrollPositionY >= 0)
+            ? WebViewScrollState.scrollingDown
+            : WebViewScrollState.scrollingUp;
+        if (changedScrollState != _webViewScrollState) {
+          _webViewScrollState = changedScrollState;
+        }
+        _currentScrollPositionY = y;
+      },
+    );
+  }
+
+  void setNamuWikiTitle(
+    InAppWebViewController controller,
+    WebUri? url,
+    bool? isReload,
+  ) {
+    setState(() {
+      namuTitle = url.toString().cleanNamuTitleDecode ?? "";
+    });
+    context.read<WebViewProvider>().setNamuWikiOutlines();
+  }
+
+  void hidePageNavigationElements(
+      InAppWebViewController controller, WebUri? url) async {
+    await controller.evaluateJavascript(
+      source: """
+        const elementToTop = document.querySelector('[data-tooltip="맨 위로"]');
+        if (elementToTop) {
+          elementToTop.style.display = 'none';
+        }
+        const elementToBottom = document.querySelector('[data-tooltip="맨 아래로"]');
+        if (elementToBottom) {
+          elementToBottom.style.display = 'none';
+        }
+      """,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: WikiGuruAnimatedAppBar(
         context: context,
-        needFullSize: webViewProvier.isWebViewScollingDown,
+        needFullSize: isWebViewScollingDown,
+        needGoBackButton: needGoBackButton,
         animationDuration: _actionButtonContainerAnimatedDuration,
-        title: webViewProvier.namuTitle ?? "",
+        title: namuTitle,
       ).build(),
       resizeToAvoidBottomInset: false,
       body: SafeArea(
         bottom: false,
         child: Stack(
           children: [
-            WebViewWidget(
-              controller: WikiGuruWebViewController().webViewController,
+            InAppWebView(
+              initialUrlRequest: URLRequest(
+                url: namuWikiBaseWebUri,
+              ),
+              onWebViewCreated: setWebViewController,
+              onScrollChanged: setWebViewScrollState,
+              onUpdateVisitedHistory: setNamuWikiTitle,
+              onLoadStop: hidePageNavigationElements,
             ),
             Align(
               alignment: Alignment.bottomCenter,
               child: FloatingButtonContainer(
-                  animatedContainerDuration:
-                      _actionButtonContainerAnimatedDuration),
+                isWebViewScrollingDown: isWebViewScollingDown,
+                animatedContainerDuration:
+                    _actionButtonContainerAnimatedDuration,
+              ),
             )
           ],
         ),

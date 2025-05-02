@@ -1,26 +1,28 @@
 // ignore_for_file: depend_on_referenced_packages
 
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
-final namuWikiBaseUrl = Uri.parse("https://namu.wiki");
+final namuWikiBaseWebUri = WebUri("https://namu.wiki");
 
 class WikiGuruWebViewController {
-  // 싱글톤 인스턴스
+  // 1. private static instance
   static final WikiGuruWebViewController _instance =
       WikiGuruWebViewController._internal();
 
-  factory WikiGuruWebViewController() {
-    return _instance;
+  // 2. private constructor
+  WikiGuruWebViewController._internal();
+
+  // 3. factory constructor
+  factory WikiGuruWebViewController() => _instance;
+
+  // 4. 실제 컨트롤러 변수 (nullable)
+  InAppWebViewController? _controller;
+
+  // 5. 컨트롤러 getter
+  InAppWebViewController? get webViewController => _controller;
+
+  // 6. 컨트롤러 setter
+  set controller(InAppWebViewController controller) {
+    _controller = controller;
   }
-
-  WikiGuruWebViewController._internal() {
-    _webViewController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(namuWikiBaseUrl);
-  }
-
-  late final WebViewController _webViewController;
-
-  // 필요하다면 외부에서 WebViewController에 접근할 수 있는 getter
-  WebViewController get webViewController => _webViewController;
 }

@@ -26,9 +26,11 @@ final List<Widget> _fullSizedFloatingButtons = [
 
 class FloatingButtonContainer extends StatelessWidget {
   final Duration animatedContainerDuration;
+  final bool isWebViewScrollingDown;
   const FloatingButtonContainer({
     super.key,
     required this.animatedContainerDuration,
+    required this.isWebViewScrollingDown,
   });
 
   @override
@@ -40,7 +42,9 @@ class FloatingButtonContainer extends StatelessWidget {
       child: hiveBoxDataProvider.getBooleanData(
               HiveBoxBooleanDataKey.isAnimatedFloatingActionButton)
           ? _AnimatedFloatingActionButton(
-              animationDuration: animatedContainerDuration)
+              animationDuration: animatedContainerDuration,
+              isWebViewScollingDown: isWebViewScrollingDown,
+            )
           : _StaticFloatingActionButton(),
     );
   }
@@ -59,20 +63,17 @@ class _StaticFloatingActionButton extends StatelessWidget {
 
 class _AnimatedFloatingActionButton extends StatelessWidget {
   final Duration animationDuration;
+  final bool isWebViewScollingDown;
 
-  const _AnimatedFloatingActionButton({
-    required this.animationDuration,
-  });
+  const _AnimatedFloatingActionButton(
+      {required this.animationDuration, required this.isWebViewScollingDown});
 
   @override
   Widget build(BuildContext context) {
-    final isWebViewScrollingDown =
-        context.watch<WebViewProvider>().isWebViewScollingDown;
-
     return AnimatedSlide(
       duration: animationDuration,
       curve: Curves.easeOut,
-      offset: isWebViewScrollingDown ? Offset(0, 0) : Offset(0, 1.5),
+      offset: isWebViewScollingDown ? Offset(0, 0) : Offset(0, 1.5),
       child: SizedBox(
         width: _floatingButtonContainerWidthMultiplier *
             _fullSizedFloatingButtons.length,
@@ -192,9 +193,9 @@ class _NamuWikiSavePageButton extends StatelessWidget {
           return;
         }
         if (context.mounted == true) {
-          await context
-              .read<WebViewProvider>()
-              .saveCurrentPageToHiveBox(context);
+          // await context
+          //     .read<WebViewProvider>()
+          //     .saveCurrentPageToHiveBox(context);
         }
         if (context.mounted == true) {
           PlutoSnackBar.showSuccessSnackBar(context, "현재 페이지를 저장했습니다.");
