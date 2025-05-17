@@ -5,7 +5,6 @@ import 'package:share_plus/share_plus.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
 import 'package:wikiguru/base/utils/web_view_navigator.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
-import 'package:wikiguru/base/wiki_guru_router.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_item.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_title.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
@@ -24,8 +23,6 @@ class MoreBottomSheets extends StatelessWidget {
           children: [
             SizedBox(height: 24),
             BottomSheetTitle(titleText: "더보기"),
-            SizedBox(height: 16),
-            _SavePageBottomSheetItem(),
             SizedBox(height: 16),
             _SetAnimatedFloatingActionButtonBottomSheetItem(),
             SizedBox(height: 16),
@@ -82,25 +79,6 @@ class _SharePageBottomSheetItem extends StatelessWidget {
           Uri.parse(currentUrl!),
         );
       },
-    );
-  }
-}
-
-class _SavePageBottomSheetItem extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return BottomSheetItem(
-      labelText: "저장된 페이지 확인하기",
-      subLabelText: "인터넷 연결이 없어도 확인할 수 있어요.",
-      onTap: () {
-        WikiGuruRouter.router
-            .push(WikiGuruRouteItems.savedNamuWikiPageScreen.item.path);
-      },
-      leadingIcon: Icons.star_outline,
-      trailingWidget: Icon(
-        Icons.chevron_right_outlined,
-        color: PlutoColors.primaryColor,
-      ),
     );
   }
 }

@@ -1,15 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:wikiguru/screens/home_screen.dart';
-import 'package:wikiguru/screens/saved_namu_wiki_page_screen.dart';
 
 enum WikiGuruRouteItems {
-  savedNamuWikiPageScreen(
-    WikiGuruRoute(
-      path: '/savedNamuWikiPageScreen',
-      screen: SavedNamuWikiPageScreen(),
-    ),
-  ),
   homeScreen(
     WikiGuruRoute(
       path: '/',

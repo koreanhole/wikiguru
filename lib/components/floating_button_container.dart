@@ -19,7 +19,6 @@ final double _floatingButtonContainerWidthMultiplier = 64;
 
 final List<Widget> _fullSizedFloatingButtons = [
   _WebViewSearchButton(),
-  _NamuWikiSavePageButton(),
   _WebViewShowNamuWikiOutlinesButton(),
   _WebViewMoreButton(),
 ];
@@ -177,31 +176,6 @@ class _WebViewShowNamuWikiOutlinesButton extends StatelessWidget {
         }
       },
       iconData: Icons.subject,
-    );
-  }
-}
-
-class _NamuWikiSavePageButton extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return _WebViewButton(
-      onTap: () async {
-        final currentUrl =
-            await WebViewNavigator(context: context).getCurrentUrl();
-        if (currentUrl == null && context.mounted) {
-          PlutoSnackBar.showFailureSnackBar(context, "저장할 수 없습니다.");
-          return;
-        }
-        if (context.mounted == true) {
-          // await context
-          //     .read<WebViewProvider>()
-          //     .saveCurrentPageToHiveBox(context);
-        }
-        if (context.mounted == true) {
-          PlutoSnackBar.showSuccessSnackBar(context, "현재 페이지를 저장했습니다.");
-        }
-      },
-      iconData: Icons.star_outline,
     );
   }
 }
