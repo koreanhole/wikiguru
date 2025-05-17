@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:wikiguru/screens/home_screen.dart';
+import 'package:wikiguru/screens/wiki_web_view_screen.dart';
 
 enum WikiGuruRouteItems {
   homeScreen(
     WikiGuruRoute(
       path: '/',
-      screen: HomeScreen(),
+      screen: WikiWebViewScreen(),
     ),
   );
 

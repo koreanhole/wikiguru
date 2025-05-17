@@ -3,21 +3,20 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logger/web.dart';
 import 'package:wikiguru/base/data/namu_wiki_outline.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
-import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
+import 'package:wikiguru/base/wiki_web_view_controller.dart';
 
 class WebViewNavigator {
   final BuildContext context;
   WebViewNavigator({required this.context});
 
   Future<String?> getCurrentUrl() async {
-    final webUri =
-        await WikiGuruWebViewController().webViewController?.getUrl();
+    final webUri = await WikiWebViewController().webViewController?.getUrl();
     return webUri.toString();
   }
 
   Future<void> focusOnSearchBar() async {
     try {
-      await WikiGuruWebViewController().webViewController?.evaluateJavascript(
+      await WikiWebViewController().webViewController?.evaluateJavascript(
             source:
                 "document.querySelector('input[placeholder=\"여기에서 검색\"]').focus();",
           );
@@ -30,9 +29,8 @@ class WebViewNavigator {
   }
 
   Future<void> goBack() async {
-    if (await WikiGuruWebViewController().webViewController?.canGoBack() ==
-        true) {
-      await WikiGuruWebViewController().webViewController?.goBack();
+    if (await WikiWebViewController().webViewController?.canGoBack() == true) {
+      await WikiWebViewController().webViewController?.goBack();
     } else {
       if (context.mounted == true) {
         PlutoSnackBar.showFailureSnackBar(context, "뒤로 갈 수 없습니다.");
@@ -41,7 +39,7 @@ class WebViewNavigator {
   }
 
   Future<void> goMainPage() async {
-    await WikiGuruWebViewController().webViewController?.loadUrl(
+    await WikiWebViewController().webViewController?.loadUrl(
           urlRequest: URLRequest(
             url: namuWikiBaseWebUri,
           ),
@@ -63,7 +61,7 @@ class WebViewNavigator {
     }
     // #를 포함하는 string들을 제거함
     final cleanedUrl = currentUrl.split("#")[0];
-    await WikiGuruWebViewController().webViewController?.loadUrl(
+    await WikiWebViewController().webViewController?.loadUrl(
           urlRequest: URLRequest(
             url: WebUri.uri(
               Uri.parse(
@@ -78,6 +76,6 @@ class WebViewNavigator {
   }
 
   Future<void> refresh() async {
-    WikiGuruWebViewController().webViewController?.reload();
+    WikiWebViewController().webViewController?.reload();
   }
 }

@@ -3,21 +3,21 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:wikiguru/base/data/web_view_scroll_state.dart';
 import 'package:wikiguru/base/utils/url_utils.dart';
-import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
+import 'package:wikiguru/base/wiki_web_view_controller.dart';
 import 'package:wikiguru/components/floating_button_container.dart';
 import 'package:wikiguru/components/wiki_guru_animated_app_bar.dart';
 import 'package:wikiguru/providers/web_view_provider.dart';
 
 const _actionButtonContainerAnimatedDuration = Duration(milliseconds: 200);
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class WikiWebViewScreen extends StatefulWidget {
+  const WikiWebViewScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<WikiWebViewScreen> createState() => _WikiWebViewScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
+class _WikiWebViewScreenState extends State<WikiWebViewScreen> {
   WebViewScrollState? _webViewScrollState;
   int _lastScrollPositionY = 0;
   bool get isWebViewScollingDown {
@@ -33,7 +33,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void setWebViewController(InAppWebViewController controller) {
-    WikiGuruWebViewController().controller = controller;
+    WikiWebViewController().controller = controller;
   }
 
   void setWebViewScrollState(InAppWebViewController controller, int x, int y) {
