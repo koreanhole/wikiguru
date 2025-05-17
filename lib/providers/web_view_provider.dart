@@ -7,10 +7,6 @@ import 'package:wikiguru/base/utils/web_view_navigator.dart';
 import 'package:wikiguru/base/wiki_guru_web_view_controller.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
 
-enum JavaScriptChannel {
-  navigationUrlChannel,
-}
-
 class WebViewProvider with ChangeNotifier {
   List<NamuWikiOutline>? _namuWikiOutlines;
 

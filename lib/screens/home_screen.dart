@@ -19,7 +19,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   WebViewScrollState? _webViewScrollState;
-  int _currentScrollPositionY = 0;
+  int _lastScrollPositionY = 0;
   bool get isWebViewScollingDown {
     if (_webViewScrollState == WebViewScrollState.scrollingDown) {
       return false;
@@ -39,15 +39,12 @@ class _HomeScreenState extends State<HomeScreen> {
   void setWebViewScrollState(InAppWebViewController controller, int x, int y) {
     setState(
       () {
-        final changedScrollState = (_currentScrollPositionY < y &&
-                y >= 0 &&
-                _currentScrollPositionY >= 0)
-            ? WebViewScrollState.scrollingDown
-            : WebViewScrollState.scrollingUp;
-        if (changedScrollState != _webViewScrollState) {
-          _webViewScrollState = changedScrollState;
+        if (y > _lastScrollPositionY) {
+          _webViewScrollState = WebViewScrollState.scrollingDown;
+        } else if (y < _lastScrollPositionY) {
+          _webViewScrollState = WebViewScrollState.scrollingUp;
         }
-        _currentScrollPositionY = y;
+        _lastScrollPositionY = y;
       },
     );
   }
