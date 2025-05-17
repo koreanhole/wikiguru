@@ -16,6 +16,26 @@ class WikiWebViewScreen extends StatefulWidget {
 }
 
 class _WikiWebViewScreenState extends State<WikiWebViewScreen> {
+  final inAppWebViewContentBlockers = [
+    ContentBlocker(
+      trigger: ContentBlockerTrigger(
+        urlFilter: ".*",
+      ),
+      action: ContentBlockerAction(
+        type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+        selector: '[data-tooltip="맨 위로"]',
+      ),
+    ),
+    ContentBlocker(
+      trigger: ContentBlockerTrigger(
+        urlFilter: ".*",
+      ),
+      action: ContentBlockerAction(
+        type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+        selector: '[data-tooltip="맨 아래로"]',
+      ),
+    ),
+  ];
   @override
   Widget build(BuildContext context) {
     final webViewProvider = context.watch<WebViewProvider>();
@@ -36,11 +56,14 @@ class _WikiWebViewScreenState extends State<WikiWebViewScreen> {
               initialUrlRequest: URLRequest(
                 url: namuWikiBaseWebUri,
               ),
+              initialSettings: InAppWebViewSettings(
+                mediaPlaybackRequiresUserGesture: true,
+                contentBlockers: inAppWebViewContentBlockers,
+              ),
               onWebViewCreated: (InAppWebViewController controller) =>
                   WikiWebViewController().controller = controller,
               onScrollChanged: webViewProvider.setWebViewScrollState,
               onUpdateVisitedHistory: webViewProvider.onUpdateVisitedHistory,
-              onLoadStop: webViewProvider.onLoadStop,
             ),
             Align(
               alignment: Alignment.bottomCenter,

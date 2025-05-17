@@ -41,13 +41,6 @@ class WebViewProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void onLoadStop(
-    InAppWebViewController controller,
-    WebUri? url,
-  ) async {
-    await _hidePageNavigationElements(controller);
-  }
-
   void _setWebViewScrollState(int y) {
     if (y < 0) {
       return;
@@ -58,22 +51,6 @@ class WebViewProvider with ChangeNotifier {
       _webViewScrollState = WebViewScrollState.scrollingUp;
     }
     _lastScrollPositionY = y;
-  }
-
-  Future<void> _hidePageNavigationElements(
-      InAppWebViewController controller) async {
-    await controller.evaluateJavascript(
-      source: """
-        const elementToTop = document.querySelector('[data-tooltip="맨 위로"]');
-        if (elementToTop) {
-          elementToTop.style.display = 'none';
-        }
-        const elementToBottom = document.querySelector('[data-tooltip="맨 아래로"]');
-        if (elementToBottom) {
-          elementToBottom.style.display = 'none';
-        }
-      """,
-    );
   }
 
   void _setNamuWikiTitle(WebUri? uri) {
