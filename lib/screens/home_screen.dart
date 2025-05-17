@@ -39,6 +39,9 @@ class _HomeScreenState extends State<HomeScreen> {
   void setWebViewScrollState(InAppWebViewController controller, int x, int y) {
     setState(
       () {
+        if (y < 0) {
+          return;
+        }
         if (y > _lastScrollPositionY) {
           _webViewScrollState = WebViewScrollState.scrollingDown;
         } else if (y < _lastScrollPositionY) {
