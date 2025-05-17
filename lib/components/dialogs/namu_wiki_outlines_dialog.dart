@@ -9,6 +9,7 @@ class NamuWikiOutlinesDialog extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final namuWikiTitle = context.read<WebViewProvider>().namuWikiTitle;
     final namuWikiOutlines = context.read<WebViewProvider>().namuWikiOutlines;
     return SingleChildScrollView(
       child: Padding(
@@ -18,7 +19,7 @@ class NamuWikiOutlinesDialog extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 24),
-            DialogTitle(titleText: "목차"),
+            DialogTitle(titleText: "목차($namuWikiTitle)"),
             SizedBox(height: 16),
             ...namuWikiOutlines.map(
               (item) => NamuWikiOutlinesItem(

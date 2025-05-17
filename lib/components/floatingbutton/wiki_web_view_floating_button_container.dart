@@ -52,7 +52,7 @@ class _WebViewFloatingButtons extends StatelessWidget {
       child: Material(
         elevation: 3,
         borderRadius: BorderRadius.circular(30),
-        color: PlutoColors.tertiaryColor,
+        color: PlutoColors.backgroundColor,
         child: Padding(
           padding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
           child: Row(

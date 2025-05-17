@@ -31,7 +31,7 @@ class WikiGuruAnimatedAppBar {
         height:
             needFullSize ? fullSizedAppBarHeight : shrinkedSizedAppBarHeight,
         child: AppBar(
-          backgroundColor: PlutoColors.tertiaryColor,
+          backgroundColor: PlutoColors.backgroundColor,
           elevation: 3,
           scrolledUnderElevation: 3,
           leading: needFullSize && needGoBackButton

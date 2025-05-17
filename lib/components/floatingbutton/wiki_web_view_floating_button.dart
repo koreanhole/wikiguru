@@ -18,7 +18,7 @@ class WikiWebViewFloatingButton extends StatelessWidget {
       onPressed: onTap,
       elevation: 0,
       highlightElevation: 0,
-      backgroundColor: PlutoColors.tertiaryColor,
+      backgroundColor: PlutoColors.backgroundColor,
       shape: CircleBorder(),
       child: Icon(
         iconData,
