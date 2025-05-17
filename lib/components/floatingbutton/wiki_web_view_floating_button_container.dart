@@ -8,7 +8,7 @@ import 'package:wikiguru/base/widgets/pluto_dialog.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
 import 'package:wikiguru/components/dialogs/namu_wiki_outlines_dialog.dart';
-import 'package:wikiguru/components/wiki_web_view_floating_button.dart';
+import 'package:wikiguru/components/floatingbutton/wiki_web_view_floating_button.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
 import 'package:wikiguru/providers/web_view_provider.dart';
 
