@@ -6,14 +6,14 @@ class WikiGuruAnimatedAppBar {
   final BuildContext context;
   final bool needFullSize;
   final bool needGoBackButton;
-  final Duration animationDuration;
+  final Duration animatedContainerDuration;
   final String title;
 
   WikiGuruAnimatedAppBar({
     required this.context,
     required this.needFullSize,
     required this.needGoBackButton,
-    required this.animationDuration,
+    required this.animatedContainerDuration,
     required this.title,
   });
   PreferredSizeWidget build() {
@@ -26,7 +26,7 @@ class WikiGuruAnimatedAppBar {
         needFullSize ? fullSizedAppBarHeight : shrinkedSizedAppBarHeight,
       ),
       child: AnimatedContainer(
-        duration: animationDuration,
+        duration: animatedContainerDuration,
         curve: Curves.easeOut,
         height:
             needFullSize ? fullSizedAppBarHeight : shrinkedSizedAppBarHeight,
@@ -40,7 +40,7 @@ class WikiGuruAnimatedAppBar {
           actions: needFullSize ? [_RefreshButton()] : [],
           title: FittedBox(
             child: AnimatedDefaultTextStyle(
-              duration: animationDuration,
+              duration: animatedContainerDuration,
               curve: Curves.easeOut,
               style: TextStyle(
                 fontSize: needFullSize
