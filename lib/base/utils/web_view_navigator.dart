@@ -61,15 +61,8 @@ class WebViewNavigator {
     }
     // #를 포함하는 string들을 제거함
     final cleanedUrl = currentUrl.split("#")[0];
-    await WikiWebViewController().webViewController?.loadUrl(
-          urlRequest: URLRequest(
-            url: WebUri.uri(
-              Uri.parse(
-                '$cleanedUrl#${namuWikiOutline.href}',
-              ),
-            ),
-          ),
-        );
+    await WikiWebViewController().webViewController?.evaluateJavascript(
+        source: 'location.replace("$cleanedUrl#${namuWikiOutline.href}");');
     if (context.mounted == true) {
       Navigator.of(context).pop();
     }
