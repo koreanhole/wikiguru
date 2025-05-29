@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
-import 'package:wikiguru/base/utils/web_view_navigator.dart';
+import 'package:wikiguru/webview/web_view_navigator.dart';
 import 'package:wikiguru/base/utils/widget_utils.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_item.dart';

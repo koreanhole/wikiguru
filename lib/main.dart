@@ -5,7 +5,7 @@ import 'package:wikiguru/base/theme/pluto_theme.dart';
 import 'package:wikiguru/base/wiki_guru_hive_box.dart';
 import 'package:wikiguru/base/wiki_guru_router.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
-import 'package:wikiguru/providers/web_view_provider.dart';
+import 'package:wikiguru/webview/web_view_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {

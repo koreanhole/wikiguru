@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
-import 'package:wikiguru/base/utils/web_view_navigator.dart';
+import 'package:wikiguru/webview/web_view_navigator.dart';
 import 'package:wikiguru/base/utils/widget_utils.dart';
 import 'package:wikiguru/base/widgets/pluto_bottom_sheet.dart';
 import 'package:wikiguru/base/widgets/pluto_dialog.dart';
@@ -10,7 +10,7 @@ import 'package:wikiguru/components/bottomsheets/more_bottom_sheets.dart';
 import 'package:wikiguru/components/dialogs/namu_wiki_outlines_dialog.dart';
 import 'package:wikiguru/components/floatingbutton/wiki_web_view_floating_button.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
-import 'package:wikiguru/providers/web_view_provider.dart';
+import 'package:wikiguru/webview/web_view_provider.dart';
 
 class WikiWebViewFloatingButtonContainer extends StatelessWidget {
   final Duration animatedContainerDuration;

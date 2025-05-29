@@ -5,7 +5,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:wikiguru/base/data/namu_wiki_outline.dart';
 import 'package:wikiguru/base/data/web_view_scroll_state.dart';
 import 'package:wikiguru/base/utils/url_utils.dart';
-import 'package:wikiguru/base/wiki_web_view_controller.dart';
+import 'package:wikiguru/webview/wiki_web_view_controller.dart';
 
 class WebViewProvider with ChangeNotifier {
   int _lastScrollPositionY = 0;

@@ -3,7 +3,7 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:logger/web.dart';
 import 'package:wikiguru/base/data/namu_wiki_outline.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
-import 'package:wikiguru/base/wiki_web_view_controller.dart';
+import 'package:wikiguru/webview/wiki_web_view_controller.dart';
 
 class WebViewNavigator {
   final BuildContext context;

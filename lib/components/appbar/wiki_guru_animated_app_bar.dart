@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
-import 'package:wikiguru/base/utils/web_view_navigator.dart';
+import 'package:wikiguru/webview/web_view_navigator.dart';
 
 class WikiGuruAnimatedAppBar {
   final BuildContext context;

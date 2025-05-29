@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:wikiguru/components/dialogs/dialog_title.dart';
 import 'package:wikiguru/components/dialogs/namu_wiki_outlines_item.dart';
-import 'package:wikiguru/providers/web_view_provider.dart';
+import 'package:wikiguru/webview/web_view_provider.dart';
 
 class NamuWikiOutlinesDialog extends StatelessWidget {
   const NamuWikiOutlinesDialog({super.key});
