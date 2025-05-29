@@ -54,7 +54,7 @@ class BottomSheetItem extends StatelessWidget {
                         leadingIcon,
                         color: PlutoColors.primaryColor,
                       ),
-                    SizedBox(width: 6),
+                    SizedBox(width: 8),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       mainAxisAlignment: MainAxisAlignment.center,

@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
 import 'package:wikiguru/base/utils/web_view_navigator.dart';
+import 'package:wikiguru/base/utils/widget_utils.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_item.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_title.dart';
@@ -22,11 +26,15 @@ class MoreBottomSheets extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             SizedBox(height: 24),
-            BottomSheetTitle(titleText: "더보기"),
-            SizedBox(height: 16),
-            _SetAnimatedFloatingActionButtonBottomSheetItem(),
-            SizedBox(height: 16),
-            _SharePageBottomSheetItem(),
+            ...addSpacingBetween(
+              widgets: [
+                BottomSheetTitle(titleText: "더보기"),
+                _SetAnimatedFloatingActionButtonBottomSheetItem(),
+                _LaunchInAppBrowserBottomSheetItem(),
+                _SharePageBottomSheetItem(),
+              ],
+              heightSpacing: 16.0,
+            ),
           ],
         ),
       ),
@@ -77,6 +85,28 @@ class _SharePageBottomSheetItem extends StatelessWidget {
         }
         Share.shareUri(
           Uri.parse(currentUrl!),
+        );
+      },
+    );
+  }
+}
+
+class _LaunchInAppBrowserBottomSheetItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BottomSheetItem(
+      labelText: "브라우저로 열기",
+      subLabelText: Platform.isIOS ? "앱 내 사파리로 이동합니다." : "기본 브라우저로 이동합니다.",
+      leadingIcon: Icons.open_in_browser_outlined,
+      onTap: () async {
+        final currentUrl =
+            await WebViewNavigator(context: context).getCurrentUrl();
+        if (currentUrl == null) {
+          return;
+        }
+        await launchUrlString(
+          currentUrl,
+          mode: LaunchMode.inAppBrowserView,
         );
       },
     );
