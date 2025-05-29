@@ -10,25 +10,38 @@ class NamuWikiOutlinesDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final namuWikiTitle = context.read<WebViewProvider>().namuWikiTitle;
-    final namuWikiOutlines = context.read<WebViewProvider>().namuWikiOutlines;
-    return SingleChildScrollView(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            SizedBox(height: 24),
-            DialogTitle(titleText: "목차($namuWikiTitle)"),
-            SizedBox(height: 16),
-            ...namuWikiOutlines.map(
-              (item) => NamuWikiOutlinesItem(
-                outlineItem: item,
-              ),
+    return FutureBuilder(
+      future: context.read<WebViewProvider>().getNamuWikiOutlines(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        }
+        if (snapshot.hasError || !snapshot.hasData || snapshot.data!.isEmpty) {
+          return SizedBox.shrink();
+        }
+        final namuWikiOutlines = snapshot.data!;
+        return SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: 24),
+                DialogTitle(titleText: "목차($namuWikiTitle)"),
+                SizedBox(height: 16),
+                ...namuWikiOutlines.map(
+                  (item) => NamuWikiOutlinesItem(
+                    outlineItem: item,
+                  ),
+                ),
+              ],
             ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 }

@@ -104,13 +104,13 @@ class _WebViewShowNamuWikiOutlinesButton extends StatelessWidget {
     return WikiWebViewFloatingButton(
       onTap: () async {
         final namuWikiOutlines =
-            context.read<WebViewProvider>().namuWikiOutlines;
-        if (namuWikiOutlines.isNotEmpty) {
+            await context.read<WebViewProvider>().getNamuWikiOutlines();
+        if (namuWikiOutlines.isNotEmpty && context.mounted) {
           await showPlutoDialog(
             context: context,
             child: NamuWikiOutlinesDialog(),
           );
-        } else {
+        } else if (context.mounted) {
           PlutoSnackBar.showFailureSnackBar(context, "목차를 불러올 수 없습니다.");
         }
       },

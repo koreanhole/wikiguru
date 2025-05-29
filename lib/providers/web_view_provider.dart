@@ -10,12 +10,7 @@ import 'package:wikiguru/base/wiki_web_view_controller.dart';
 class WebViewProvider with ChangeNotifier {
   int _lastScrollPositionY = 0;
   WebViewScrollState? _webViewScrollState;
-
-  List<NamuWikiOutline>? _namuWikiOutlines;
-
   String namuWikiTitle = "";
-  List<NamuWikiOutline> get namuWikiOutlines =>
-      _namuWikiOutlines ?? List.empty();
   bool get isWebViewScollingDown {
     if (_webViewScrollState == WebViewScrollState.scrollingDown) {
       return false;
@@ -37,31 +32,10 @@ class WebViewProvider with ChangeNotifier {
     bool? isReload,
   ) {
     _setNamuWikiTitle(url);
-    _setNamuWikiOutlines();
     notifyListeners();
   }
 
-  void _setWebViewScrollState(int y) {
-    if (y < 0) {
-      return;
-    }
-    if (y > _lastScrollPositionY) {
-      _webViewScrollState = WebViewScrollState.scrollingDown;
-    } else if (y < _lastScrollPositionY) {
-      _webViewScrollState = WebViewScrollState.scrollingUp;
-    }
-    _lastScrollPositionY = y;
-  }
-
-  void _setNamuWikiTitle(WebUri? uri) {
-    namuWikiTitle = uri.toString().cleanNamuTitleDecode ?? "";
-  }
-
-  void _setNamuWikiOutlines() async {
-    _namuWikiOutlines = null;
-    notifyListeners();
-    // Delay for page fully loaded -> 대문 페이지 갔을 때 이전 페이지의 목차가 보일때 있음
-    await Future.delayed(Duration(milliseconds: 500));
+  Future<List<NamuWikiOutline>> getNamuWikiOutlines() async {
     final resultString =
         await WikiWebViewController().webViewController?.evaluateJavascript(
       source: r'''
@@ -86,8 +60,22 @@ class WebViewProvider with ChangeNotifier {
       ''',
     ) as String;
     final List<dynamic> jsonList = jsonDecode(resultString);
-    _namuWikiOutlines =
-        jsonList.map((item) => NamuWikiOutline.fromJson(item)).toList();
-    notifyListeners();
+    return jsonList.map((item) => NamuWikiOutline.fromJson(item)).toList();
+  }
+
+  void _setWebViewScrollState(int y) {
+    if (y < 0) {
+      return;
+    }
+    if (y > _lastScrollPositionY) {
+      _webViewScrollState = WebViewScrollState.scrollingDown;
+    } else if (y < _lastScrollPositionY) {
+      _webViewScrollState = WebViewScrollState.scrollingUp;
+    }
+    _lastScrollPositionY = y;
+  }
+
+  void _setNamuWikiTitle(WebUri? uri) {
+    namuWikiTitle = uri.toString().cleanNamuTitleDecode ?? "";
   }
 }
