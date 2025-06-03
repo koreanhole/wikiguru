@@ -42,6 +42,7 @@ class WikiWebViewFloatingButtonContainer extends StatelessWidget {
 class _WebViewFloatingButtons extends StatelessWidget {
   final List<Widget> _floatingButtonWigets = [
     _WebViewSearchButton(),
+    _WebViewGoHomeButton(),
     _WebViewShowNamuWikiOutlinesButton(),
     _WebViewMoreButton(),
   ];
@@ -79,6 +80,18 @@ class _WebViewSearchButton extends StatelessWidget {
         await WebViewNavigator(context: context).focusOnSearchBar();
       },
       iconData: Icons.search,
+    );
+  }
+}
+
+class _WebViewGoHomeButton extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return WikiWebViewFloatingButton(
+      onTap: () async {
+        await WebViewNavigator(context: context).goMainPage();
+      },
+      iconData: Icons.home_outlined,
     );
   }
 }
