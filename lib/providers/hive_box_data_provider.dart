@@ -2,7 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 enum HiveBoxBooleanDataKey {
-  isAnimatedFloatingActionButton(true);
+  isAnimatedFloatingActionButton(true),
+  isContentBlockerEnabled(true);
 
   final bool defaultValue;
   const HiveBoxBooleanDataKey(this.defaultValue);

@@ -63,6 +63,100 @@ class WebViewProvider with ChangeNotifier {
     return jsonList.map((item) => NamuWikiOutline.fromJson(item)).toList();
   }
 
+  Future<void> setInAppWebViewSetting({
+    required bool needContentBlocker,
+  }) async {
+    final List<ContentBlocker> navigationBlockers = [
+      ContentBlocker(
+        trigger: ContentBlockerTrigger(
+          urlFilter: ".*",
+        ),
+        action: ContentBlockerAction(
+          type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+          selector: '[data-tooltip="맨 위로"]',
+        ),
+      ),
+      ContentBlocker(
+        trigger: ContentBlockerTrigger(
+          urlFilter: ".*",
+        ),
+        action: ContentBlockerAction(
+          type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+          selector: '[data-tooltip="맨 아래로"]',
+        ),
+      ),
+    ];
+    final List<ContentBlocker> googleAdsBlockers = [
+      // Google AdSense and DoubleClick ads by CSS class
+      ContentBlocker(
+        trigger: ContentBlockerTrigger(urlFilter: ".*"),
+        action: ContentBlockerAction(
+          type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+          selector: ".adsbygoogle", // Common class for AdSense
+        ),
+      ),
+      ContentBlocker(
+        trigger: ContentBlockerTrigger(urlFilter: ".*"),
+        action: ContentBlockerAction(
+          type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+          selector: 'ins.adsbygoogle', // Often used with <ins> tags
+        ),
+      ),
+      ContentBlocker(
+        trigger: ContentBlockerTrigger(urlFilter: ".*"),
+        action: ContentBlockerAction(
+          type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+          selector: '[data-ad-client]',
+        ),
+      ),
+      ContentBlocker(
+        trigger: ContentBlockerTrigger(urlFilter: ".*"),
+        action: ContentBlockerAction(
+          type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+          selector: '[data-ad-slot]',
+        ),
+      ),
+      ContentBlocker(
+        trigger: ContentBlockerTrigger(urlFilter: ".*"),
+        action: ContentBlockerAction(
+          type: ContentBlockerActionType.CSS_DISPLAY_NONE,
+          selector: '[data-ad-format]',
+        ),
+      ),
+      // Blocking requests to common Google ad domains
+      ContentBlocker(
+        trigger:
+            ContentBlockerTrigger(urlFilter: ".*googlesyndication\\.com.*"),
+        action: ContentBlockerAction(type: ContentBlockerActionType.BLOCK),
+      ),
+      ContentBlocker(
+        trigger: ContentBlockerTrigger(urlFilter: ".*doubleclick\\.net.*"),
+        action: ContentBlockerAction(type: ContentBlockerActionType.BLOCK),
+      ),
+      ContentBlocker(
+        trigger: ContentBlockerTrigger(urlFilter: ".*googleadservices\\.com.*"),
+        action: ContentBlockerAction(type: ContentBlockerActionType.BLOCK),
+      ),
+    ];
+    if (needContentBlocker) {
+      WikiWebViewController().webViewController?.setSettings(
+            settings: InAppWebViewSettings(
+              mediaPlaybackRequiresUserGesture: false,
+              contentBlockers: [
+                ...navigationBlockers,
+                ...googleAdsBlockers,
+              ],
+            ),
+          );
+    } else {
+      WikiWebViewController().webViewController?.setSettings(
+            settings: InAppWebViewSettings(
+              mediaPlaybackRequiresUserGesture: false,
+            ),
+          );
+    }
+  }
+
   void _setWebViewScrollState(int y) {
     if (y < 0) {
       return;

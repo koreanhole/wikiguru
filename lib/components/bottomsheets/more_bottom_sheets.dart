@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:provider/provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:url_launcher/url_launcher_string.dart';
@@ -12,6 +13,8 @@ import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_item.dart';
 import 'package:wikiguru/components/bottomsheets/bottom_sheet_title.dart';
 import 'package:wikiguru/providers/hive_box_data_provider.dart';
+import 'package:wikiguru/webview/web_view_provider.dart';
+import 'package:wikiguru/webview/wiki_web_view_controller.dart';
 
 class MoreBottomSheets extends StatelessWidget {
   const MoreBottomSheets({super.key});
@@ -30,6 +33,7 @@ class MoreBottomSheets extends StatelessWidget {
               widgets: [
                 BottomSheetTitle(titleText: "더보기"),
                 _SetAnimatedFloatingActionButtonBottomSheetItem(),
+                _WebViewContentBlockerBottomSheetItem(),
                 _LaunchInAppBrowserBottomSheetItem(),
                 _SharePageBottomSheetItem(),
               ],
@@ -109,6 +113,34 @@ class _LaunchInAppBrowserBottomSheetItem extends StatelessWidget {
           mode: LaunchMode.inAppBrowserView,
         );
       },
+    );
+  }
+}
+
+class _WebViewContentBlockerBottomSheetItem extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    final hiveboxDataProvider = context.watch<HiveBoxDataProvider>();
+    final webViewProvider = context.read<WebViewProvider>();
+    final isContentBlockerEnabled = hiveboxDataProvider.getBooleanData(
+      HiveBoxBooleanDataKey.isContentBlockerEnabled,
+    );
+    return BottomSheetItem(
+      labelText: "불필요한 요소 없애기",
+      subLabelText: "나무위키를 더 몰입감있게 즐기세요.",
+      leadingIcon: Icons.visibility_off_outlined,
+      trailingWidget: CupertinoSwitch(
+        activeTrackColor: PlutoColors.primaryColor,
+        value: isContentBlockerEnabled,
+        onChanged: (value) async {
+          await hiveboxDataProvider.setBooleanData(
+            HiveBoxBooleanDataKey.isContentBlockerEnabled,
+            value,
+          );
+          await webViewProvider.setInAppWebViewSetting(
+              needContentBlocker: value);
+        },
+      ),
     );
   }
 }
