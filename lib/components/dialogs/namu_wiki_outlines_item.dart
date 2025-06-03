@@ -22,15 +22,19 @@ class NamuWikiOutlinesItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 '$indent${_getBulletinNumbering(outlineItem)}.',
               ),
               SizedBox(width: 2),
-              Text(
-                outlineItem.label,
-                style: TextStyle(
-                  color: PlutoColors.primaryColor,
+              Expanded(
+                child: Text(
+                  outlineItem.label,
+                  style: TextStyle(
+                    color: PlutoColors.primaryColor,
+                    overflow: TextOverflow.visible,
+                  ),
                 ),
               ),
             ],
