@@ -54,9 +54,10 @@ class _SetAnimatedFloatingActionButtonBottomSheetItem extends StatelessWidget {
 
     return BottomSheetItem(
       labelText: "하단 바 자동 숨기기",
+      leadingIcon: Icons.move_down_outlined,
       subLabelText: isAnimatedFloatingActionButton
-          ? "스크롤 방향에 따라 하단 바가 자동으로 나타납니다."
-          : "하단 바가 고정되어 있습니다.",
+          ? "스크롤 방향에 따라 하단 바가 표시됩니다."
+          : "하단 바가 항상 표시됩니다.",
       trailingWidget: CupertinoSwitch(
         activeTrackColor: PlutoColors.primaryColor,
         value: isAnimatedFloatingActionButton,

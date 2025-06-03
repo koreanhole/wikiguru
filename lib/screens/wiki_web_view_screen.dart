@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
-import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 import 'package:wikiguru/base/theme/pluto_colors.dart';
 import 'package:wikiguru/base/widgets/pluto_snack_bar.dart';
