@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
+import 'package:logger/logger.dart';
 import 'package:wikiguru/base/data/namu_wiki_outline.dart';
 import 'package:wikiguru/base/data/web_view_scroll_state.dart';
 import 'package:wikiguru/base/utils/url_utils.dart';
@@ -18,6 +19,8 @@ class WebViewProvider with ChangeNotifier {
     return true;
   }
 
+  bool isWebViewLoading = false;
+
   bool get isDefaultNamuWikiTitle =>
       namuWikiTitle == "" || namuWikiTitle == "나무위키:대문";
 
@@ -32,6 +35,37 @@ class WebViewProvider with ChangeNotifier {
     bool? isReload,
   ) {
     _setNamuWikiTitle(url);
+    notifyListeners();
+  }
+
+  void onLoadStart(InAppWebViewController controller, WebUri? url) {
+    isWebViewLoading = true;
+    notifyListeners();
+  }
+
+  void onLoadStop(InAppWebViewController controller, WebUri? url) {
+    isWebViewLoading = false;
+    notifyListeners();
+  }
+
+  void onProgressChanged(InAppWebViewController controller, int progress) {
+    if (progress == 100) {
+      isWebViewLoading = false;
+      notifyListeners();
+    }
+  }
+
+  void onReceivedError(InAppWebViewController controller,
+      WebResourceRequest request, WebResourceError error) {
+    isWebViewLoading = false;
+    Logger().e(error.description);
+    notifyListeners();
+  }
+
+  void onReceivedHttpError(InAppWebViewController controller,
+      WebResourceRequest request, WebResourceResponse response) {
+    isWebViewLoading = false;
+    Logger().e(response.statusCode);
     notifyListeners();
   }
 
